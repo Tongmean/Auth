@@ -6,7 +6,7 @@ urlpatterns = [
     path('LogOutUser', views.LogOutUser, name='LogOutUser'),
     path('SignUp', views.SignUp, name='Signup'),
     path('Home', views.Home, name='Home'),
-    path('Profile', views.Profile, name='Profile'),
+    path('Profile', views.MyProfile, name='Profile'),
     
 
     #ShipmentForm

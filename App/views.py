@@ -43,11 +43,11 @@ def LogOutUser(request):
 @login_required(login_url='Loginpage')
 def Home(request):
     return render(request,'Home.html')
-
-def Profile(request):
-    Profile = Profile.objects.a()
-    print(Profile)
-    return render(request, 'Profile.html')
+@login_required(login_url='Loginpage')
+def MyProfile(request):
+    userID = request.user.id
+    profile = Profile.objects.filter( user_id = userID)
+    return render(request, 'Profile.html', {'userID':userID})
 #ShipmentRecord
 @login_required(login_url='Loginpage')
 def ShipmentRecondList(request):
