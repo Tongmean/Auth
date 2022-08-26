@@ -24,11 +24,11 @@
 
 <body>
     {% load crispy_forms_tags %}
-    <div class="container-fluid d-flex justify-content-center">
-        <form Action='' method='POST' enctype='multipart/form-data'>
+    <div class="container-fluid d-flex justify-content-center align-items-center" style="height:100vh">
+        <form Action='' method='POST' enctype='multipart/form-data' class="m-1">
             {% csrf_token %}
             {{form|crispy}}
-            <button type="Submit" > Sign up</button>
+            <button type="Submit" class="btn btn-primary w-25 mt-2" > Sign up</button>
         </form>
     </div>
    

@@ -1,14 +1,14 @@
 from django.urls import path
 from . import views
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.Home, name=''),
     path('LoginPage', views.LoginPage, name='Loginpage'),
     path('LogOutUser', views.LogOutUser, name='LogOutUser'),
-    path('SignUp', views.SignUp, name='Signup'),
+    path('SignUpuser', views.SignUpuser, name='Signupuser'),
+    path('SignUpadmin', views.SignUpadmin, name='Signupadmin'),
     path('Home', views.Home, name='Home'),
     path('Profile', views.MyProfile, name='Profile'),
     
-
     #ShipmentForm
     path('ShipmentRecordList', views.ShipmentRecondList, name='ShipmentRecordList'),
     #ActionRecordList
