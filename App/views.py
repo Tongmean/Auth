@@ -90,11 +90,61 @@ def MyProfile(request):
 @login_required(login_url='Loginpage')
 @user_only
 def ShipmentRecondList(request):
-    return render(request,'ShipmentForm/ShipmentFormRecord.html')
+    record = ShipmentForm.objects.all()
+    
+    
+
+    return render(request,'ShipmentForm/ShipmentFormRecord.html', {'records':record})
+
+@login_required(login_url='Loginpage')
+@user_only
+def InsertRecord(request):
+    form = Shipmentrecord
+    useremail = request.user.email
+    if 'submit' in request.POST: 
+        form = Shipmentrecord(request.POST, request.FILES)
+        if form.is_valid():
+            f = form.save(commit=False)
+            f.Status= 'Submitted'
+            f.SubmitBy = useremail
+            f.save()
+            messages.success(request, 'Your form was Submit successfully')
+            return redirect('ShipmentRecordList')
+        else:
+            return HttpResponse('UR form get some Error')
+            messages.warning(request, 'Please correct Your form')
+    if 'save' in request.POST: 
+        form = Shipmentrecord(request.POST, request.FILES)
+        if form.is_valid():
+            f = form.save(commit=False)
+            f.Status= 'Saved'
+            f.Submitby = useremail
+            f.save()
+            messages.success(request, 'Your form was Save successfully')
+            return redirect('ShipmentFormRecord')
+        else:
+            messages.warning(request, 'Please correct your form')
+    return render(request, 'ShipmentForm/InsertRecord.html',{'form':form})
+
+@login_required(login_url='Loginpage')
+@user_only
+def MyActivities(request):
+    useremail = request.user.email
+    record = ShipmentForm.objects.filter(SubmitBy = useremail )
+    return render(request, 'ShipmentForm/MyActivities.html', {'records':record})
+
 @login_required(login_url='Loginpage')
 def Home(request):
     return render(request,'Home.html')
 #Action
+def ShipmentList(request):
+    record = ShipmentForm.objects.filter(Status = 'Submitted')
+    return render(request, 'Admin/ShipmentList.html', {'records':record})
+
+
+def AddAction(request):
+    return render(request, 'Admin/AddAction.html')
+
 @login_required(login_url='Loginpage')
 @admin_only
 def ActionRecordList(request):

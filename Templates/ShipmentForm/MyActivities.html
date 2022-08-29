@@ -24,12 +24,6 @@
     <script src="https://kit.fontawesome.com/a4f690b883.js" crossorigin="anonymous"></script>
 
     <style>
-        .footer-section {
-            width: 100%;
-            position: absolute;
-            bottom: 0;
-        }
-
         .onhover-sexy {
             transition: .5s;
             color: #000;
@@ -75,6 +69,35 @@
             padding-bottom: 50px;
             margin-bottom: 10px;
         }
+        .Activities {
+            display:flex;
+            width:100%;
+            height: 100px;
+            border: 2px solid white;
+            background-color:white;
+            shadow:2px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            margin:8px;
+            border-radius:20px;
+            padding:10px;
+        }
+        .bottom-four-up {
+            display:flex;
+            margin-right:90px;
+            justify-content:end;
+            align-items:end;
+
+        }
+        .bottom-four-down {
+            margin-top:10px;
+            display:flex;
+            margin-right:100px;
+            justify-content: flex-end;
+            align-items:end;
+            padding-right:10px;
+            padding:10px;
+
+        }
 
 
     </style>
@@ -105,8 +128,8 @@
         </div>
         <div id="chet-chet" class="">
             <div class="card">
-                <div class="card-header" style="color:#000 ">
-                    <h4 class="" style="display:inline; font-weight:bold ">Shipment Record List</h4>
+                <div class="card-header m-2" style="color:#000 ">
+                    <h4 class="" style="display:inline; font-weight:bold ">My Activities</h4>
                 </div>
                 <div class="card-body">
                     {% if messages %}
@@ -121,38 +144,56 @@
                         </ul>
                     {% endif %} 
                     <p class="card-text">
-                        <div class="status-filter">
-                            <select id="statusFilter" class="btn btn-outline-dark m-1 border rounded-2 ms-3" style={border: 1px solid black;}>
-                              <option value="">Status Filter</option>
-                              <option value="Saved">Saved</option>
-                              <option value="Submitted">Submitted</option>
-                            </select>
-                        </div>
                         <div class="table-responsive">
                             <table id="filterTable" class="table table-striped display  nowrap" style="width:100%">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th scope="col">Transaction_number</th>
-                                        <th scope="col">Type of Discrepancy</th>
-                                        <th scope="col">Part_Number</th>
-                                        <th scope="col">Submit_date</th>
-                                        <th scope="col">Submit_by</th>
-                                        <th scope="col">status</th>
-                                        <th scope="col">Detail</th>
+                                        <th scope="col"></th>
+                                       
                                         
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for record in records %}
                                     <tr>
-                                        <td style='text-align: center'>{{record.Transaction_Number}}</td>
-                                        <td style='text-align: center'>{{record.TypeOfDiscrepancy}}</td>
-                                        <td style='text-align: center'>{{record.PartNumber}}</td>
-                                        <td style=''>{{record.SubmitDate}}</td>
-                                        <td style=''>{{record.SubmitBy}}</td>
-                                        <td style=' font-weight: bold '>{{record.Status}}</td>
-                                        <td style='text-align: center'>
-                                            <a class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal{{record.transaction_number}}">Detail</a>
+                                        <td>
+                                            <div class="Activities">
+                                                <div class="container-fluid">
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <h6>Transaction Number :{{record.Transaction_Number}}</h6>
+                                                            <h6>Mode of Transportation :{{record.ModeOfTranSportation}}</h6>
+                                                            <h6>Detail of Discrepancy :{{record.DetailOfDiscrepancy}}</h6>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <h6>Submit By :{{record.SubmitBy}}</h6>
+                                                            <h6>Type of Discrepancy :{{record.TypeOfDiscrepancy}}</h6>
+                                                            
+                                                            <h6>Date of Incident :{{record.DateOfIncident}}</h6>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <h6>Submit Date :{{record.SubmitDate}}</h6>
+                                                            {%if record.ProcessingTime == 'None'%}
+                                                            <h6>Processing Time :{{record.ProcessingTime|default:""}}</h6>
+                                                            {% endif %}
+                                                            <h6>Status  :<span style='font-weight: bold'>{{record.Status}}<span/></h6>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            
+                                                        </div>
+    
+                                                        <div class="col-1 ps-5">
+                                                            <div class="bottom-four-up">
+                                                                <a class="btn btn-success btn-sm mx-4" data-bs-toggle="modal" data-bs-target="#exampleModal{{record.transaction_number}}">Update</a>
+                                                                <a class="btn btn-danger btn-sm mx-3" data-bs-toggle="modal" data-bs-target="#exampleModal{{record.transaction_number}}">Delete</a>
+                                                            </div>
+                                                            <div class="bottom-four-down">
+                                                                <a class="btn btn-warning btn-sm mx-5" data-bs-toggle="modal" data-bs-target="#exampleModal{{record.transaction_number}}">Detail</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     {% endfor %}

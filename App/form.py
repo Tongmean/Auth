@@ -15,3 +15,30 @@ class updateProfile(ModelForm):
     class Meta:
         model = Profile
         fields = ['Fullname', 'Description','Profile_Img' ]
+        
+class Shipmentrecord(ModelForm):
+    class Meta:
+        model = ShipmentForm
+        fields = '__all__'
+        labels = {
+            'Area': '',
+            'FlightNumber':'',
+            'ModeOfTranSportation':'',
+            'Forwarder':'',
+            'ShipperName':'',
+            'ShipperCountry':'',
+            'CustomDeclarationNumber':'',
+            'InvoiceNumber':'',
+            'PickTicket':'',
+            'BillOfLanding':'',
+            "SupplierNAme":'',
+            'PartNumber':'',
+            'InvoiceQuantity':'',
+            'InvoiceOUM':'',
+            'TypeOfDiscrepancy':'',
+            'DetailOfDiscrepancy':'',
+            'ShippingDocument':'',
+            'Other':'',
+            'TotalPackage':'',
+            'UnitPrice':'',
+        }

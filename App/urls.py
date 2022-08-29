@@ -11,6 +11,10 @@ urlpatterns = [
     
     #ShipmentForm
     path('ShipmentRecordList', views.ShipmentRecondList, name='ShipmentRecordList'),
+    path('InsertRecord', views.InsertRecord, name='InsertRecord'),
+    path('MyActivities', views.MyActivities, name='MyActivities'),
     #ActionRecordList
     path('ActionRecordList', views.ActionRecordList, name='ActionRecordList'),
+    path('AddAction<int:pk>', views.AddAction, name='Action'),
+    path('ShipmentList', views.ShipmentList, name='ShipmentList'),
 ]
