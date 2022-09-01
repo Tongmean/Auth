@@ -9,6 +9,11 @@ from django.contrib.auth.models import User
 # Create your models here.
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+import datetime
+currentdate = datetime.datetime.now(datetime.timezone.utc)
+formatDate = currentdate.strftime("%A/%B/%Y")
+WDweek = currentdate
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True ,related_name='Profile')
     Fullname = models.CharField(max_length=50, null=True)
@@ -39,7 +44,7 @@ class ShipmentForm(models.Model):
     Transaction_Number = models.AutoField(primary_key = True, null=False)
     AREA = (
         ('local' , 'local'),
-        ('Over' , 'Oversea'),
+        ('Oversea' , 'Oversea'),
     )
     Area = models.CharField(max_length=50, blank= True, null= True, choices=AREA)
     FlightNumber = models.CharField(max_length=60, null= True, blank= True)
@@ -72,10 +77,10 @@ class ShipmentForm(models.Model):
     TotalPackage = models.CharField(max_length=50, null =True, blank= True)
     DateOfIncident = models.DateField(null= True,max_length=30, blank= True)
     TYPEOFDISCREPANCY = (
-        ('Shortage' , 'Shortage Quantity'),
-        ('Over' , 'Over Quantity'),
-        ('Wrong' , 'Wrong Parts'),
-        ('PO' , 'PO Problem'),
+        ('Shortage Quantity' , 'Shortage Quantity'),
+        ('Over Quantity' , 'Over Quantity'),
+        ('Wrong Parts' , 'Wrong Parts'),
+        ('PO Problem' , 'PO Problem'),
     )
     TypeOfDiscrepancy = models.CharField(max_length=40, null= True, choices=TYPEOFDISCREPANCY, blank= True)
     DetailOfDiscrepancy = models.CharField(max_length=70, null =True, blank= True)
@@ -89,15 +94,23 @@ class ShipmentForm(models.Model):
     def __self__(self):
         return self.Area
     
+    
+    def Process(self):
+        if self.Status == 'Close':
+            Tran = currentdate - self.SubmitDate
+            return Tran
+    def save(self, *args, **kwargs):
+        self.ProcessingTime = str(self.Process())
+        super(ShipmentForm, self).save(*args, **kwargs)
 
 class ActionCause(models.Model):
     ActionID = models.AutoField(primary_key = True, null=False)
-    Transaction_Number = models.ForeignKey(ShipmentForm, on_delete=models.CASCADE, blank=True, null=True)
+    Transaction_Number = models.ForeignKey(ShipmentForm, on_delete=models.CASCADE, blank=True, null=True, related_name= 'ActionCause')
     RootCause = models.CharField(max_length=150, null = True, blank=True)
     ACTION =(
-        ('Replace','Replace or Return Shipment'),
-        ('Correct','Correct Invoice'),
-        ('Credit','Credit Note')
+        ('Replace or Return Shipment','Replace or Return Shipment'),
+        ('Correct Invoice','Correct Invoice'),
+        ('Credit Note','Credit Note')
     )
     Action = models.CharField(max_length=30, blank=True, null=True, choices=ACTION)
     ReferenceDocument = models.FileField(upload_to='ReferenceDocument', max_length=100, blank=True, null=True)

@@ -75,6 +75,15 @@
             padding-bottom: 50px;
             margin-bottom: 10px;
         }
+        .Detail {
+            background-color:white;
+            padding:10px;
+            border: 2px solid grey;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            border-radius:50px;
+            font-size:large;
+
+        }
 
 
     </style>
@@ -126,6 +135,7 @@
                               <option value="">Status Filter</option>
                               <option value="Saved">Saved</option>
                               <option value="Submitted">Submitted</option>
+                              <option value="Close">Close</option>
                             </select>
                         </div>
                         <div class="table-responsive">
@@ -152,8 +162,124 @@
                                         <td style=''>{{record.SubmitBy}}</td>
                                         <td style=' font-weight: bold '>{{record.Status}}</td>
                                         <td style='text-align: center'>
-                                            <a class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal{{record.transaction_number}}">Detail</a>
+                                            <a class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#Activities{{record.Transaction_Number}}"><i class="fa fa-info-circle me-2" style="font-size:16px"></i>Detail</a>
                                         </td>
+                                        <div class="modal fade" id="Activities{{record.Transaction_Number}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-xl">
+                                                <div class="modal-content ">
+                                                    <div class="modal-header my-3 ms-4">
+                                                        <h4 class="modal-title" id=""><p class="">Shipment Record Detail</p></h4>
+                                                        <button type="button" class="btn-close me-3 my-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class=" container-fluid Detail"  >
+                                                            <div class="row m-2">
+                                                                <div class="col">
+                                                                    Transaction Number: {{record.Transaction_Number}}
+                                                                </div>
+                                                                <div class="col">
+                                                                    Area : {{record.Area}}
+                                                                </div>
+                                                                <div class="col">
+                                                                    Fight Number: {{record.FlightNumber}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="row m-2">
+                                                                <div class="col">
+                                                                    Mode of Transportation: {{record.ModeOfTranSportation}}
+                                                                </div>
+                                                                <div class="col">
+                                                                    Forwarder : {{record.Forwarder}}
+                                                                </div>
+                                                                <div class="col">
+                                                                    Shipper-Name: {{record.ShipperName}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="row m-2">
+                                                                <div class="col">
+                                                                    Shipper-Country: {{record.ShipperCountry}}
+                                                                </div>
+                                                                <div class="col">
+                                                                    Customs-Declaration-Number : {{record.CustomDeclarationNumber}}
+                                                                </div>
+                                                                <div class="col">
+                                                                    Invoice-Number: {{record.InvoiceNumber}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="row m-2">
+                                                                <div class="col">
+                                                                    Pick-Ticketor : {{record.PickTicket}}
+                                                                </div>
+                                                                <div class="col">
+                                                                    Bill_of_landing : {{record.BilOfLanding}}
+                                                                </div>
+                                                                <div class="col">
+                                                                    Supplier-Name: {{record.SupplierName}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="row m-2">
+                                                                <div class="col">
+                                                                    Part-Number : {{record.PartNumber}}
+                                                                </div>
+                                                                <div class="col">
+                                                                    Invoice-Quantity : {{record.InvoiceQuantity}}
+                                                                </div>
+                                                                <div class="col">
+                                                                    Invoice -UOM: {{record.InvoiceUOM}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="row m-2">
+                                                                <div class="col">
+                                                                    Unit-Price : {{record.UnitPrice}}
+                                                                </div>
+                                                                <div class="col">
+                                                                    Total-Package : {{record.TotalPackage}}
+                                                                </div>
+                                                                <div class="col">
+                                                                    Date-of-Incident: {{record.DateOfIncident}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="row m-2">
+                                                                <div class="col">
+                                                                    Type-of-Discrepancy : {{record.TypeOfDiscrepancy}}
+                                                                </div>
+                                                                <div class="col">
+                                                                    Detail-of-Discrepancy : {{record.DetailOfDiscrepancy}}
+                                                                </div>
+                                                                <div class="col">
+                                                                    Submit-By: {{record.SubmitBy}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="row m-2">
+                                                                <div class="col">
+                                                                    Submit-Date : {{record.SubmitDate}}
+                                                                </div>
+                                                                <div class="col">
+                                                                    Status :<span style="font-weight:bold;"> {{record.Status}} </span>
+                                                                </div>
+                                                                <div class="col">
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            <div class="row m-2">
+                                                                <div class="col">
+                                                                    <a href="/media/{{record.ShippingDocument}}">{{record.ShippingDocument|default:""}}</a>
+                                                                </div>
+                                                                <div class="col">
+                                                                    <a href="/media/{{record.Other}}">{{record.Other|default:""}}</a>
+                                                                </div>
+                                                                <div class="col">
+                                                                    <button onclick="window.print()">Print this page</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </tr>
                                     {% endfor %}
                                 </tbody>

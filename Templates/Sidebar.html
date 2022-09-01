@@ -67,12 +67,18 @@
       </li>
       <li>
         <i class='fas fa-tasks' style='font-size:24px'></i>
-        <a href="Dashboard" style="text-decoration: none; color: #000"
+        <a href="MyTask" style="text-decoration: none; color: #000"
           >&nbsp;My Task</a
         >
       </li>
       {% endif %}
       <!--Admin-->
+      <li>
+        <i class='fab fa-accusoft' style='font-size:24px'></i>
+        <a href="DiscrepancyRecord" style="text-decoration: none; color: #000"
+          >&nbsp;Discrepancy Record</a
+        >
+      </li>
       <li>
         <i class="fa fa-bar-chart-o" style="font-size: 24px"></i>
         <a href="Dashboard" style="text-decoration: none; color: #000"
@@ -82,7 +88,7 @@
       {% if request.user.groups.get.name == 'admin' %}
       <li>
         <i class="fa fa-gear" style="font-size: 24px"></i>
-        <a href="#" style="text-decoration: none; color: #000"
+        <a href="managemanagement" style="text-decoration: none; color: #000"
           >&nbsp;User management
         </a>
       </li>

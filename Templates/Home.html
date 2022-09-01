@@ -118,6 +118,19 @@
                 <h3 class="pt-2 ms-3"><i class="fa fa-book" style="font-size:24px"></i>   Today Overview</h3>
             </div>
             <div class="row text-center border rouned-2 m-1 border-2 shadow">
+                {% if request.user.groups.get.name == 'admin' %}
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show " role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                </button>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </ul>
+                    {% endif %} 
+                {% endif %} 
                 <div class="col-sm-3 d-flex flex-column justify-content-center ">
                     <h4>Welcome,</h4>
                     <h3 class="text-success title" id="ProfileName">{{request.user.Profile.Fullname}}</h3>
@@ -127,14 +140,14 @@
                         <div class="col-sm h-30 border m-4 item-card rounded-3 text-white p-3 ">
                             <p>Today Cases</p>
                             <h2>{{Today}}</h2>
-                            <h2>{{request.user.Profile.Full_Name}}</h2>
+                            
                         </div>
                         <div class="col-sm h-30 border m-4 item-card rounded-3 text-white p-3 ">
                             <p>Weekly Cases</p>
                             <h2>{{week}}</h2>
                         </div>
                         <div class="col-sm h-30 border m-4 item-card rounded-3 text-white p-3 ">
-                            <p>Monly Cases</p>
+                            <p>Monthly Cases</p>
                             <h2>{{month}}</h2>
                         </div>
                         <div class="col-sm h-30 border m-4 item-card rounded-3 text-white p-3 ">
@@ -143,9 +156,9 @@
                         </div>
                     </div>
                 </div>
-        </div>
+            </div>
         <div class="container-fluid mt-5">
-            <div class="row shadow">
+            <div class="row shadow h-75">
                 <div class="card">
                     <div class="card-header d-flex align-items-center py-2">
                         <h4 class="py-1"><i class="fa fa-bar-chart" style="font-size:27px"></i>
@@ -153,8 +166,11 @@
                         
                     </div>
                 </div>
-                <div class="col-6 shadow text-center me-5" id="myPlot" style="width:45%;" >
+                <div class="col-6 shadow text-center me-5" id=""  >
                     <!--bar-->
+                    <canvas id="Homebar" style="width:100%;max-width:600px" class="" >
+                        <!--bar-->
+                    </canvas>
                 </div> 
                 <div class="col-6 shadow text-center ms-5" id="myPlot1" style="width:40%;"  >
                     <!--Pie-->
@@ -163,6 +179,8 @@
 
         </div>
 
+    </div>
+    <div style="height:150px">
     </div>
     <script>
         function w3_open() {
@@ -199,27 +217,42 @@
 
     <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
     <script>
-        var xArray = ["Shortage Quantity", "Over Quantity", "Wrong Parts", "Mixed Parts", "PO problems"];
-        var yArray = ["1" , "1", "1",  "2", "4"];
+        var xValues = ["Shortage Quantity", "Over Quantity", "Wrong Parts", "Mixed Parts", "PO problems"];
+        var yValues = [{{Shortage}},{{Over}}, {{Wrong}}, {{Mixed}}, {{PO}}];
+        var barColors = ["darkblue", "green","blue","orange","purple"];
         
-        var data = [{
-          x:xArray,
-          y:yArray,
-          type:"bar"
-        }];
-        
-        var layout = {title:"Type of Discrepancy"};
-        
-        Plotly.newPlot("myPlot", data, layout);
+        new Chart("Homebar", {
+          type: "bar",
+          data: {
+            labels: xValues,
+            datasets: [{
+              backgroundColor: barColors,
+              data: yValues
+            }]
+          },
+          options: {
+            legend: {display: false},
+            title: {
+              display: true,
+              text: "Type Of Discrepancy"
+            }
+          }
+        });
     </script>
     <script>
         var xArray = ["Shortage Quantity", "Over Quantity", "Wrong Parts", "Mixed Parts", "PO problems"];
-        var yArray = [1, 2, 3, 4, 5];
+        var yArray = [{{Shortage}},{{Over}}, {{Wrong}}, {{Mixed}}, {{PO}}];
         var layout = {title:"Type of Discrepancy"};
         var data = [{labels:xArray, values:yArray, type:"pie"}];
         Plotly.newPlot("myPlot1", data, layout);
     </script>
+    <script text="javascript">
+        setTimeout(fade_out, 3000);
+        function fade_out() {
+            $("#message").fadeOut().empty();
+        }
 
+    </script>
     
 
 </body>

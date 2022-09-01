@@ -72,8 +72,8 @@
         .Activities {
             display:flex;
             width:100%;
-            height: 105px;
-            border: 2px solid darkblue;
+            height: 120px;
+            border: 2px solid grey;
             background-color:white;
             shadow:2px;
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -82,23 +82,7 @@
             padding:10px;
             padding-top:10px;
         }
-        .bottom-four-up {
-            display:flex;
-            margin-right:90px;
-            justify-content:end;
-            align-items:end;
-
-        }
-        .bottom-four-down {
-            margin-top:10px;
-            display:flex;
-            margin-right:100px;
-            justify-content: flex-end;
-            align-items:end;
-            padding-right:10px;
-            padding:10px;
-
-        }
+       
         .Detail {
             background-color:white;
             padding:10px;
@@ -139,7 +123,7 @@
         <div id="chet-chet" class="">
             <div class="card">
                 <div class="card-header m-2" style="color:#000 ">
-                    <h4 class="" style="display:inline; font-weight:bold ">My Activities</h4>
+                    <h4 class="" style="display:inline; font-weight:bold ">Discrepancy Record List</h4>
                 </div>
                 <div class="card-body">
                     {% if messages %}
@@ -153,9 +137,15 @@
                             {% endfor %}
                         </ul>
                     {% endif %} 
+                    {% comment %} <div class="card body-card mt-5 me-5 ms-5 p-4 d-flex ">
+                        <form method="GET">
+                            {{myFilter.form}}
+                            <button type="submit" class="btn btn-primary btn-sm mx-5">Filter</button>
+                        </form>
+                    </div> {% endcomment %}
                     <p class="card-text">
                         <div class="table-responsive">
-                            <table id="filterTable" class="table table-striped display  nowrap" style="width:100%">
+                            <table id="DiscrepancyRecord" class="table table-striped display  nowrap" style="width:100%">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th scope="col"></th>
@@ -171,39 +161,29 @@
                                                 <div class="container-fluid">
                                                     <div class="row">
                                                         <div class="col-3">
-                                                            <h6>Transaction Number :{{record.Transaction_Number}}</h6>
-                                                            <h6>Mode of Transportation :{{record.ModeOfTranSportation}}</h6>
-                                                            <h6>Detail of Discrepancy :{{record.DetailOfDiscrepancy}}</h6>
+                                                            <h6>Transaction Number :{{record.Transaction_Number.Transaction_Number}}</h6>
+                                                            <h6>Mode of Transportation :{{record.Transaction_Number.ModeOfTranSportation}}</h6>
+                                                            <h6>Detail of Discrepancy :{{record.Transaction_Number.DetailOfDiscrepancy}}</h6>
+                                                            <h6>Action :{{record.Action}}</h6>
                                                         </div>
-                                                        <div class="col-3">
-                                                            <h6>Submit By :{{record.SubmitBy}}</h6>
-                                                            <h6>Type of Discrepancy :{{record.TypeOfDiscrepancy}}</h6>
+                                                        <div class="col-4">
+                                                            <h6>Submit By :{{record.Transaction_Number.SubmitBy}}</h6>
+                                                            <h6>Type of Discrepancy :{{record.Transaction_Number.TypeOfDiscrepancy}}</h6>
                                                             
-                                                            <h6>Date of Incident :{{record.DateOfIncident}}</h6>
+                                                            <h6>Date of Incident :{{record.Transaction_Number.DateOfIncident}}</h6>
+                                                            <h6>RootCause :{{record.RootCause}}</h6>
                                                         </div>
-                                                        <div class="col-3">
-                                                            <h6>Submit Date :{{record.SubmitDate}}</h6>
-                                                            {%if record.Status == 'Close' %}
-                                                                <h6>Processing Time :{{record.ProcessingTime|default:""}}</h6>
+                                                        <div class="col-4">
+                                                            <h6>Submit Date :{{record.Transaction_Number.SubmitDate}}</h6>
+                                                            {%if record.Transaction_Number.ProcessingTime != 'None'%}
+                                                            <h6>Processing Time :{{record.Transaction_Number.ProcessingTime|default:""}}</h6>
                                                             {% endif %}
-                                                            <h6>Status  :<span style='font-weight: bold'>{{record.Status}}<span/></h6>
+                                                            <h6>Status  :<span style='font-weight: bold'>{{record.Transaction_Number.Status}}<span/></h6>
+                                                            <h6>Report By :{{record.ReportBy}}</h6>
                                                         </div>
-                                                        <div class="col-2">
-                                                            
-                                                        </div>
-    
-                                                        <div class="col-1 ps-5">
-                                                            <div class="bottom-four-up">
-                                                                {%if record.Status == 'Saved'%}
-                                                                <a class="btn btn-success btn-sm mx-4" href={% url 'Update' record.Transaction_Number %} >Update</a>
-                                                                <a class="btn btn-danger btn-sm mx-3" href={% url 'Delete' record.Transaction_Number %} >Delete</a>
-                                                                {% endif %}
-
-                                                            </div>
-                                                            <div class="bottom-four-down">
-                                                                <a class="btn btn-warning btn-sm mx-5" data-bs-toggle="modal" data-bs-target="#Activities{{record.Transaction_Number}}">Detail</a>
-                                                            </div>
-                                                            <div class="modal fade" id="Activities{{record.Transaction_Number}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="col-1 ps-5 ">
+                                                            <a class="btn btn-warning btn-sm " data-bs-toggle="modal" data-bs-target="#DiscrepancyList{{record.Transaction_Number.Transaction_Number}}">Detail</a>
+                                                            <div class="modal fade" id="DiscrepancyList{{record.Transaction_Number.Transaction_Number}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                                 <div class="modal-dialog modal-xl">
                                                                     <div class="modal-content ">
                                                                         <div class="modal-header my-3 ms-4">
@@ -214,100 +194,110 @@
                                                                             <div class=" container-fluid Detail"  >
                                                                                 <div class="row m-2">
                                                                                     <div class="col">
-                                                                                        Transaction Number: {{record.Transaction_Number}}
+                                                                                        Transaction Number: {{record.Transaction_Number.Transaction_Number}}
                                                                                     </div>
                                                                                     <div class="col">
-                                                                                        Area : {{record.Area}}
+                                                                                        Area : {{record.Transaction_Number.Area}}
                                                                                     </div>
                                                                                     <div class="col">
-                                                                                        Fight Number: {{record.FlightNumber}}
+                                                                                        Fight Number: {{record.Transaction_Number.FlightNumber}}
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row m-2">
                                                                                     <div class="col">
-                                                                                        Mode of Transportation: {{record.ModeOfTranSportation}}
+                                                                                        Mode of Transportation: {{record.Transaction_Number.ModeOfTranSportation}}
                                                                                     </div>
                                                                                     <div class="col">
-                                                                                        Forwarder : {{record.Forwarder}}
+                                                                                        Forwarder : {{record.Transaction_Number.Forwarder}}
                                                                                     </div>
                                                                                     <div class="col">
-                                                                                        Shipper-Name: {{record.ShipperName}}
+                                                                                        Shipper-Name: {{record.Transaction_Number.ShipperName}}
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row m-2">
                                                                                     <div class="col">
-                                                                                        Shipper-Country: {{record.ShipperCountry}}
+                                                                                        Shipper-Country: {{record.Transaction_Number.ShipperCountry}}
                                                                                     </div>
                                                                                     <div class="col">
-                                                                                        Customs-Declaration-Number : {{record.CustomDeclarationNumber}}
+                                                                                        Customs-Declaration-Number : {{record.Transaction_Number.CustomDeclarationNumber}}
                                                                                     </div>
                                                                                     <div class="col">
-                                                                                        Invoice-Number: {{record.InvoiceNumber}}
+                                                                                        Invoice-Number: {{record.Transaction_Number.InvoiceNumber}}
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row m-2">
                                                                                     <div class="col">
-                                                                                        Pick-Ticketor : {{record.PickTicket}}
+                                                                                        Pick-Ticketor : {{record.Transaction_Number.PickTicket}}
                                                                                     </div>
                                                                                     <div class="col">
-                                                                                        Bill_of_landing : {{record.BilOfLanding}}
+                                                                                        Bill_of_landing : {{record.Transaction_Number.BilOfLanding}}
                                                                                     </div>
                                                                                     <div class="col">
-                                                                                        Supplier-Name: {{record.SupplierName}}
+                                                                                        Supplier-Name: {{record.Transaction_Number.SupplierName}}
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row m-2">
                                                                                     <div class="col">
-                                                                                        Part-Number : {{record.PartNumber}}
+                                                                                        Part-Number : {{record.Transaction_Number.PartNumber}}
                                                                                     </div>
                                                                                     <div class="col">
-                                                                                        Invoice-Quantity : {{record.InvoiceQuantity}}
+                                                                                        Invoice-Quantity : {{record.Transaction_Number.InvoiceQuantity}}
                                                                                     </div>
                                                                                     <div class="col">
-                                                                                        Invoice -UOM: {{record.InvoiceUOM}}
+                                                                                        Invoice -UOM: {{record.Transaction_Number.InvoiceUOM}}
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row m-2">
                                                                                     <div class="col">
-                                                                                        Unit-Price : {{record.UnitPrice}}
+                                                                                        Unit-Price : {{record.Transaction_Number.UnitPrice}}
                                                                                     </div>
                                                                                     <div class="col">
-                                                                                        Total-Package : {{record.TotalPackage}}
+                                                                                        Total-Package : {{record.Transaction_Number.TotalPackage}}
                                                                                     </div>
                                                                                     <div class="col">
-                                                                                        Date-of-Incident: {{record.DateOfIncident}}
+                                                                                        Date-of-Incident: {{record.Transaction_Number.DateOfIncident}}
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row m-2">
                                                                                     <div class="col">
-                                                                                        Type-of-Discrepancy : {{record.TypeOfDiscrepancy}}
+                                                                                        Type-of-Discrepancy : {{record.Transaction_Number.TypeOfDiscrepancy}}
                                                                                     </div>
                                                                                     <div class="col">
-                                                                                        Detail-of-Discrepancy : {{record.DetailOfDiscrepancy}}
+                                                                                        Detail-of-Discrepancy : {{record.Transaction_Number.DetailOfDiscrepancy}}
                                                                                     </div>
                                                                                     <div class="col">
-                                                                                        Submit-By: {{record.SubmitBy}}
+                                                                                        Submit-By: {{record.Transaction_Number.SubmitBy}}
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row m-2">
-                                                                                    <div class="col-4">
-                                                                                        Submit-Date : {{record.SubmitDate}}
+                                                                                    <div class="col">
+                                                                                        Submit-Date : {{record.Transaction_Number.SubmitDate}}
                                                                                     </div>
-                                                                                    <div class="col-4">
-                                                                                        Status :<span style="font-weight:bold;"> {{record.Status}} </span>
+                                                                                    <div class="col">
+                                                                                        Status :<span style="font-weight:bold;"> {{record.Transaction_Number.Status}} </span>
                                                                                     </div>
-                                                                                    {%if record.ProcessingTime != 'None' %}
-                                                                                    <div class="col-4">
-                                                                                        Processing Time: {{record.ProcessingTime}}
+                                                                                    <div class="col">
+                                                                                        RootCause : {{record.RootCause}}
                                                                                     </div>
-                                                                                    {%endif%}
                                                                                 </div>
                                                                                 <div class="row m-2">
                                                                                     <div class="col">
-                                                                                        <a href="/media/{{record.ShippingDocument}}">{{record.ShippingDocument|default:""}}</a>
+                                                                                        Action : {{record.Action}}
                                                                                     </div>
                                                                                     <div class="col">
-                                                                                        <a href="/media/{{record.Other}}">{{record.Other|default:""}}</a>
+                                                                                        <a href="/media/{{record.ReferenceDocument}}">{{record.ReferenceDocument|default:""}}</a>
+                                                                                    </div>
+                                                                                    
+                                                                                    <div class="col">
+                                                                                        
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row m-2">
+                                                                                    <div class="col">
+                                                                                        <a href="/media/{{record.Transaction_Number.ShippingDocument}}">{{record.Transaction_Number.ShippingDocument|default:""}}</a>
+                                                                                    </div>
+                                                                                    <div class="col">
+                                                                                        <a href="/media/{{record.Transaction_Number.Other}}">{{record.Transaction_Number.Other|default:""}}</a>
                                                                                     </div>
                                                                                     <div class="col">
                                                                                         <button onclick="window.print()">Print this page</button>
@@ -320,7 +310,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                            </div> 
                                                         </div>
                                                     </div>
                                                 </div>
@@ -380,14 +370,10 @@
     <!--DataTable-->
     <script>
         $("document").ready(function () {
-          $("#filterTable").dataTable({
-            scrollX: true,
-            scrollY: 'auto',
-            scrollCollapse: true,
-            paging: false,
+          $("#DiscrepancyRecord").dataTable({
+            searching: true,
 
           });
-          
         });
     </script> 
 </body>

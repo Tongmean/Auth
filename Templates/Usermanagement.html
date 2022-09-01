@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,16 +20,13 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!--DataTable-->
     <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
-    <!--Icon-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/a4f690b883.js" crossorigin="anonymous"></script>
+    <!-- Google Chart -->
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
 
     <style>
-        .footer-section {
-            width: 100%;
-            position: absolute;
-            bottom: 0;
-        }
+
 
         .onhover-sexy {
             transition: .5s;
@@ -47,7 +46,7 @@
             padding-bottom: 20px;
             transition: 0.4s;
             cursor: pointer;
-
+            
         }
 
         li:hover {
@@ -58,26 +57,33 @@
         li>a {
             padding-left: 25px;
         }
-
         li>i {
             padding-left: 10px;
         }
-
         div.dataTables_wrapper {
             margin: 0 auto;
         }
-
-        .span {
-            display: inline-block;
-            width: 130px;
-            height: 100px;
-            box-shadow: 5px 2px #227c54;
-            background-image: linear-gradient(90deg, #227c54 0%, #50a7c2 100%);
-            border-radius: 10px;
-            padding-bottom: 50px;
-            margin-bottom: 10px;
+        .usermanagerment {
+            margin-left:10px;
+            margin-top:10px;
+            padding:30px;            
+            border:2px solid gray;
+            border-radius:20px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
+        .usermanagermentbuttom {
+            margin-left:10px;
+            margin-top:10px;
+            padding:30px;        
+            border-radius:20px;    
+            border:2px solid gray;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+
+
     </style>
+
 </head>
 
 <body>
@@ -90,7 +96,7 @@
         <div class="">
             <div>
                 <div>
-                    {% include 'Sidebar.html' %}
+                    {% include 'Sidebar.html' %} 
                 </div>
             </div>
         </div>
@@ -98,61 +104,59 @@
 
     </div>
 
-
+    {% load crispy_forms_tags %}
     <!--Main Display-->
     <div id="main">
         <div class="navbar" style="background-image:linear-gradient(90deg, #42948e 0%, #0fcd58 100%)">
-            <button onclick="w3_open()" id="openNav" class="btn text-white" style="font-size: 25px">&#9776;</button>
+            <button onclick="w3_open()" id="openNav" class="btn text-white" style="font-size: 25px" >&#9776;</button>
             <div class="col text-start">
                 <h3 class="ps-2 text-white">Discrepancy Portal</h3>
-                {% if messages %}
-                        <ul class="messages">
-                            {% for message in messages %}
-                                <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show " role="alert">
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                    </button>
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
-                        </ul>
-                {% endif %} 
             </div>
         </div>
-        <div id="chet-chet" class="">
-            <div class="card container-fluid m-3>
-                <div class="table-responsive">
-                    <div class="table-responsive">
-                        <table id="Actionlist" class="table table-striped display  nowrap" style="width:100%">
-                            <thead class="thead-dark">
-                                <tr class="text-center">
-                                    <th scope="col">ActionID</th>
-                                    <th scope="col">Rootcause</th>
-                                    <th scope="col">Action</th>
-                                    <th scope="col">Report_date</th>
-                                    <th scope="col">Report_by</th>
-                                    <th scope="col">ReferenceDocument</th>
-                                    <th scope="col">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for record in records %}
-                                <tr class="">
-                                    <td>{{record.ActionID}}</td>
-                                    <td>{{record.RootCause}}</td>
-                                    <td>{{record.Action}}</td>
-                                    <td>{{record.ReportDate}}</td>
-                                    <td>{{record.ReportBy}}</td>
-                                    <td><a href="/media/{{record.ReferenceDocument}}">{{record.ReferenceDocument|default:""}}</a></td>
-                                    <td>{{record.Transaction_Number.Status}}</td>
-                                </tr>
-                                {% endfor %}
-
-                            </tbody>
-                        </table>
+        <div class="container-fluid  row">
+            <div class="row usermanagermentbuttom">
+                <div class="col-6">
+                    <h2 class="fs-1" style='font-weight: bold'>User Record list</h2>
+                </div>
+                <div class="col-6">
+                    <div class="d-flex justify-content-end">
+                        <a href="SignUpuser" class="btn btn-success me-4">Create user </a>
+                        <a href="SignUpadmin" class="btn btn-danger">Create admin </a>
                     </div>
                 </div>
             </div>
+            <div class="table-responsive usermanagerment">
+                    <table id="usermanagerment" class="table table-striped display  nowrap" style="width:100%">
+                        <thead class="thead-dark">
+                            <tr class="text-center">
+                                <th class="text-center">ID</th>
+                                <th class="text-center">User Name</th>
+                                <th class="text-center">User Group</th>
+                                <th class="text-center">Email</th>
+                                <th class="text-center">Full Name</th>
+                                <th class="text-center">Description</th>
+                                <th class="text-center">Date_Created</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in all_users%}
+                            <tr class="text-center">
+                                <td style=''>{{i.user.id}}</td>
+                                <td style=''>{{i.user}}</td>
+                                <td style='font-weight: bold'>{{i.user.groups.get.name}}</td>
+                                <td style=''>{{i.user.email}}</td>
+                                <td style=''>{{i.Fullname}}</td>
+                                <td style='  '>{{i.Description}}</td>
+                                <td style=''>{{i.user.date_joined}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+            </div>
         </div>
+
     </div>
     <script>
         function w3_open() {
@@ -181,22 +185,20 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!--Data Table-->
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <!--message Disappear-->
-    <script text="javascript">
-        setTimeout(fade_out, 1500);
-        function fade_out() {
-            $("#message").fadeOut().empty();
-        }
-
-    </script>
-    <!--DataTable-->
+    <!--ChartJs-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <!--Plotly-->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script>
         $("document").ready(function () {
-            $("#Actionlist").dataTable({
-                searching: true,
-            });
+          $("#usermanagerment").dataTable({
+   
+
+          });
+          
         });
-    </script>
+    </script> 
 </body>
 
 </html>

@@ -42,3 +42,14 @@ class Shipmentrecord(ModelForm):
             'TotalPackage':'',
             'UnitPrice':'',
         }
+        
+class ChangeStatus(ModelForm):
+    class Meta:
+        model = ShipmentForm
+        fields = ['Status']
+
+class ActionCauseForm(ModelForm):
+    class Meta:
+        model = ActionCause
+        fields = '__all__'
+        

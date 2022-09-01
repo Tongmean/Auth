@@ -105,21 +105,10 @@
             <button onclick="w3_open()" id="openNav" class="btn text-white" style="font-size: 25px">&#9776;</button>
             <div class="col text-start">
                 <h3 class="ps-2 text-white">Discrepancy Portal</h3>
-                {% if messages %}
-                        <ul class="messages">
-                            {% for message in messages %}
-                                <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show " role="alert">
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                    </button>
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
-                        </ul>
-                {% endif %} 
             </div>
         </div>
         <div id="chet-chet" class="">
-            <div class="card container-fluid m-3>
+            <div class="card container-fluid">
                 <div class="table-responsive">
                     <div class="table-responsive">
                         <table id="Actionlist" class="table table-striped display  nowrap" style="width:100%">
@@ -153,6 +142,17 @@
                 </div>
             </div>
         </div>
+        <!--Footer-->
+        <!-- <section id="footer-section" class="footer-section">
+            <div class="row">
+                <div style="height: 80px"
+                    class="bg-secondary co-12 d-flex flex-column justify-content-center align-item-center">
+                    <a style="text-decoration: none" class="text-white text-center">© 2022 Copyright: Western
+                        Digital</a>
+                </div>
+            </div>
+        </section>  -->
+        <!--Footer-->
     </div>
     <script>
         function w3_open() {
@@ -181,6 +181,12 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!--Data Table-->
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <!-- <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+                
+        });
+    </script> -->
     <!--message Disappear-->
     <script text="javascript">
         setTimeout(fade_out, 1500);
@@ -190,6 +196,13 @@
 
     </script>
     <!--DataTable-->
+    <script>
+        $("document").ready(function () {
+            $("#Action_Shipmentform").dataTable({
+                searching: true,
+            });
+        });
+    </script>
     <script>
         $("document").ready(function () {
             $("#Actionlist").dataTable({
