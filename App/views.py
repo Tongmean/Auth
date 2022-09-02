@@ -85,14 +85,15 @@ def SignUpuser(request):
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
-            messages.success(request, 'The account was Created for' + username )
             
             group = Group.objects.get(name='User')
             user.groups.add(group)
             
-            return HttpResponse('The account was Created')
+            messages.success(request, 'The account was Created for :' + ' ' + username )
+            # return redirect('managemanagement')
         else:
-            return HttpResponse("U from got some Problem:")
+            messages.ERROR(request, 'The account was Created for :' + ' ' + username )
+            # return HttpResponse("U from got some Problem:")
         
     return render(request, 'SignUpuser.html', {'form':form})
 
@@ -105,14 +106,13 @@ def SignUpadmin(request):
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
-            messages.success(request, 'The account was Created for' + username )
+            
             
             group = Group.objects.get(name='admin')
             user.groups.add(group)
-            
-            return HttpResponse('The account was Created')
+            messages.success(request, 'The account was Created for' + username )
         else:
-            return HttpResponse("U from got some Problem:")
+            messages.ERROR(request, 'The account was Created for :' + ' ' + username )
         
     return render(request, 'SignUpadmin.html', {'form':form})
 

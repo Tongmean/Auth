@@ -87,6 +87,7 @@
 </head>
 
 <body>
+    {% load django_browser_reload %}
     <div class="w3-sidebar w3-animate-left" style="display:none; padding:0%; margin:0%; " id="mySidebar">
         <div class="col d-flex justify-content-end">
             <button class="btn btn-danger m-3" onclick="w3_close()">
@@ -114,6 +115,17 @@
             </div>
         </div>
         <div class="container-fluid  row">
+            {% if messages %}
+            <ul class="messages mt-2">
+                {% for message in messages %}
+                    <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show " role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </ul>
+            {% endif %} 
             <div class="row usermanagermentbuttom">
                 <div class="col-6">
                     <h2 class="fs-1" style='font-weight: bold'>User Record list</h2>
@@ -136,6 +148,7 @@
                                 <th class="text-center">Full Name</th>
                                 <th class="text-center">Description</th>
                                 <th class="text-center">Date_Created</th>
+                                <th class="text-center">Delete</th>
                                 
                             </tr>
                         </thead>
@@ -149,14 +162,21 @@
                                 <td style=''>{{i.Fullname}}</td>
                                 <td style='  '>{{i.Description}}</td>
                                 <td style=''>{{i.user.date_joined}}</td>
+                                {% if i.user.groups.get.name == 'User' %}
+                                <td style=''><a class="btn btn-danger btn-sm">Delete</a></td>
+                                {% elif  i.user.groups.get.name == 'admin' %}
+                                <td style=''><a class="btn btn-warning btn-sm">Update</a></td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
-
+                    
             </div>
         </div>
 
+    </div>
+    <div style="height:100px">
     </div>
     <script>
         function w3_open() {
@@ -199,6 +219,16 @@
           
         });
     </script> 
+    <script text="javascript">
+        setTimeout(fade_out, 3000);
+        function fade_out() {
+            $("#message").fadeOut().empty();
+        }
+
+    </script>
+    {% django_browser_reload_script %}
+   
+        
 </body>
 
 </html>
