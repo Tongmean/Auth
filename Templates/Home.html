@@ -77,6 +77,40 @@
             padding-bottom: 50px;
             margin-bottom: 10px;
         }
+        .typewriter h3 {
+            overflow: hidden;
+            /* Ensures the content is not revealed until the animation */
+            border-right: .15em solid orange;
+            /* The typwriter cursor */
+            white-space: nowrap;
+            /* Keeps the content on a single line */
+            margin: 0 auto;
+            /* Gives that scrolling effect as the typing happens */
+            letter-spacing: .15em;
+            /* Adjust as needed */
+            animation: typing 7s steps(40, end), blink-caret .75s step-end infinite;
+            animation-iteration-count: infinite;
+          }
+          /* The typing effect */
+          
+          @keyframes typing {
+            from {
+              width: 0
+            }
+            to {
+              width: 100%
+            }
+          }
+          /* The typewriter cursor effect */
+          
+          @keyframes blink-caret {
+            from, to {
+              border-color: transparent
+            }
+            50% {
+              border-color: orange;
+            }
+        }
 
        
 
@@ -132,7 +166,7 @@
                     </ul>
                     {% endif %} 
                 {% endif %} 
-                <div class="col-sm-3 d-flex flex-column justify-content-center ">
+                <div class="col-sm-3 d-flex flex-column justify-content-center typewriter">
                     <h4>Welcome,</h4>
                     <h3 class="text-success title" id="ProfileName">{{request.user.Profile.Fullname}}</h3>
                 </div>
@@ -158,7 +192,8 @@
                     </div>
                 </div>
             </div>
-        <div class="container-fluid mt-5">
+        </div>
+        <div class="container-fluid mx-1">
             <div class="row shadow h-75">
                 <div class="card">
                     <div class="card-header d-flex align-items-center py-2">
@@ -167,13 +202,13 @@
                         
                     </div>
                 </div>
-                <div class="col-sm-6 shadow text-center me-5" id=""  >
+                <div class=" col-xl-6 col-lg-6 col-md-12 col-sm-12 " id=""  >
                     <!--bar-->
                     <canvas id="Homebar" style="width:100%;max-width:600px" class="" >
                         <!--bar-->
                     </canvas>
                 </div> 
-                <div class="col-sm-6 shadow text-center ms-5" id="myPlot1" style="width:40%;"  >
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 text-center ms-5" id="myPlot1" style="width:40%;"  >
                     <!--Pie-->
                 </div>
             </div>  

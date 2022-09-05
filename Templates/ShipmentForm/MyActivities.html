@@ -171,9 +171,10 @@
                                                 <div class="container-fluid">
                                                     <div class="row">
                                                         <div class="col-3">
+                                                            <h6>Submit Date :{{record.SubmitDate}}</h6>
                                                             <h6>Transaction Number :{{record.Transaction_Number}}</h6>
                                                             <h6>Mode of Transportation :{{record.ModeOfTranSportation}}</h6>
-                                                            <h6>Detail of Discrepancy :{{record.DetailOfDiscrepancy}}</h6>
+                                                            
                                                         </div>
                                                         <div class="col-3">
                                                             <h6>Submit By :{{record.SubmitBy}}</h6>
@@ -182,6 +183,7 @@
                                                             <h6>Date of Incident :{{record.DateOfIncident}}</h6>
                                                         </div>
                                                         <div class="col-3">
+                                                            <h6>Detail of Discrepancy :{{record.DetailOfDiscrepancy}}</h6>
                                                             <h6>Submit Date :{{record.SubmitDate}}</h6>
                                                             {%if record.Status == 'Close' %}
                                                                 <h6>Processing Time :{{record.ProcessingTime|default:""}}</h6>
@@ -383,10 +385,7 @@
     <script>
         $("document").ready(function () {
           $("#filterTable").dataTable({
-            scrollX: true,
-            scrollY: 'auto',
-            scrollCollapse: true,
-            paging: false,
+            "order": [[0, 'desc']]
 
           });
           

@@ -163,7 +163,7 @@
                                 <td style='  '>{{i.Description}}</td>
                                 <td style=''>{{i.user.date_joined}}</td>
                                 {% if i.user.groups.get.name == 'User' %}
-                                <td style=''><a class="btn btn-danger btn-sm">Delete</a></td>
+                                <td style=''><a href = {% url 'DeleteUser' i.user.id  %} class="btn btn-danger btn-sm">Delete</a></td>
                                 {% elif  i.user.groups.get.name == 'admin' %}
                                 <td style=''><a class="btn btn-warning btn-sm">Update</a></td>
                                 {% endif %}

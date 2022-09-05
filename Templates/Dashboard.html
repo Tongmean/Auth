@@ -97,6 +97,33 @@
         .Endpage{
             height:100px;
         }
+        .myChartArea {
+            display:flex;
+            width:50%;
+            height:40%;
+            justify-centent:center;
+            border:2px solid white;
+            justify-content:center;
+            
+        }
+        .myChartInvoiceUOM {
+            display:flex;
+            width:50%;
+            height:40%;
+            padding-right:10px;
+            border:2px solid white;
+            justify-content:center;
+            margin-right:50px;
+        }
+
+        .myChartArea iframe {
+            display: none;
+            position: relative !important;
+        }
+        .myChartInvoiceUOM iframe {
+            display: none;
+            position: relative !important;
+        }
 
     </style>
 
@@ -139,37 +166,50 @@
                         <h4 class="py-1"><i class="fa fa-bar-chart" style="font-size:27px"></i>
                         </i id="typewriter">Chart Overview</h4>
                     </div>
-                    <div class="m-4 p-4 d-flex ">
+                    <div class="p-4">
                         <form method="GET">
                             {{myFilter.form}}
                             
                             
-                            <button type="submit" class="btn btn-info btn-sm mx-5" style="backgroud-color:#02075d">Search</button>
+                            <button type="submit" class="btn btn-info btn-sm ms-4" style="backgroud-color:#02075d">Search</button>
                         </form>
                     </div>
                 </div>
-                
-                <div class=" col-6 ms-5 barchart ">
-                    <canvas id="TypeOfDiscrepancybar" style="width:100%;max-width:600px" class="" >
-                        <!--bar-->
-                    </canvas>
-                </div>
-            
+                <div class="row mx-auto d-flex justify-content-between align-items-center ">
+                    <div class="border col-xl-6 col-lg-5  col-md-12 col-sm-12 shadow" >
+                        <div class="myChartArea">
+                            <canvas id="myChartArea" style=""></canvas>
+                        </div>
+                    </div>
+                    <div class="border col-xl-6 col-lg-5  col-md-12 col-sm-12 shadow">
+                        <div class="myChartArea ">
+                            <canvas id="myChartInvoiceUOM" style=""></canvas>
+                        </div>
+                    </div>
 
-                <div class=" col-5 flex d-flex justify-content-end">
-                    <div  id="TypeOfDiscrepancypie"  style="width:76%" class="piechart ">
-                        <!--Pie-->
+                </div>
+                <div class="row mx-auto py-4 pb-2" style="">
+                    <div class="border col-xl-6 col-lg-6  col-md-12 col-sm-12 shadow">
+                        <canvas id="TypeOfDiscrepancybar" style="width:100%;max-width:600px" class="" >
+                            <!--bar-->
+                        </canvas>
+                    </div>
+                
+                    <div class="border col-xl-6 col-lg-6  col-md-12 col-sm-12 shadow d-flex justify-content-center">
+                    
+                        <div  id="TypeOfDiscrepancypie"  style="width:100%" class="">
+                            <!--Pie-->
+                        </div>
                     </div>
                 </div>
-             
                     
             </div>  
-            <div class="Exportcsv ms-5 mt-5">
+            <div class="Exportcsv ms-5 mt-5 mb-2 w-25">
                 <a href="GenCSV" class="btn btn-secondary btn-large ms-3" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
                 ">Export Csv</a>
             </div>
 
-            <div class="row  ms-5 me-5">
+            <div class="row  ms-5 me-5 p-4">
                 <table id="Dashboard" class="table table-striped display  nowrap" style="width:100%;">
                     <thead class="thead-dark text-center" style="font-size: 12px;">
                         <tr class= "text-center">
@@ -200,6 +240,8 @@
                             <td style=' font-weight: bold '>{{record.Status}}</td>
                             <td style='text-align: center'>
                                 <a class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#Dashboard{{record.Transaction_Number}}"><i class="fa fa-info-circle me-2" style="font-size:16px"></i>Detail</a>
+                                <a class="btn btn-warning btn-sm" href={% url 'Genpdf' record.Transaction_Number  %} ><i class="fa fa-file-pdf-o" style="font-size:16px"></i>
+                                </i>PDF</a>
                             </td>
                             <div class="modal fade" id="Dashboard{{record.Transaction_Number}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-xl">
@@ -410,16 +452,74 @@
     <script>
         $("document").ready(function () {
           $("#Dashboard").dataTable({
-            scrollX: true,
+            {% comment %} scrollX: true,
             scrollY: '90vh',
             scrollCollapse: true,
-            paging: false,
-
+            paging: false, {% endcomment %}
+            order: [[3, 'desc']],
           });
           
         });
     </script> 
+    <!---->
+    <script>
+        var xValues = ["Local", "Oversea"];
+        var yValues = [{{local}}, {{Oversea}}];
+        var barColors = [
+          "#00008b",
+          "#003f00",
 
+        ];
+        
+        new Chart("myChartArea", {
+          type: "doughnut",
+          data: {
+            labels: xValues,
+            datasets: [{
+              backgroundColor: barColors,
+              data: yValues
+            }]
+          },
+          options: {
+            title: {
+              display: true,
+              text: "Area"
+            }
+          }
+        });
+    </script>
+    <!--Invoice-->
+    <script>
+        var xValues = ["Each", "Carton", "Pail", "Piece", "Pair", "Bottle"];
+        var yValues = [{{Each}}, {{Carton}}, {{Pail}}, {{Piece}}, {{Pair}},{{Bottle}}];
+        var barColors = [
+          "#b91d47",
+          "#00aba9",
+          "#2b5797",
+          "#e8c3b9",
+          "#1e7145"
+        ];
+        
+        new Chart("myChartInvoiceUOM", {
+          type: "pie",
+          data: {
+            labels: xValues,
+            datasets: [{
+              backgroundColor: barColors,
+              data: yValues
+            }]
+          },
+          options: {
+            title: {
+              display: true,
+              text: "Invioce UOM"
+            }
+          }
+        });
+    </script>
+        
+
+        
     
 
 </body>

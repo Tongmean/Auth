@@ -120,35 +120,42 @@
         </div>
         <div id="chet-chet" class="">
             <div class="card container-fluid m-3>
-                <div class="table-responsive">
+                <div class="card">
+                    <div class="card-header m-2" style="color:#000 ">
+                        <h4 class="" style="display:inline; font-weight:bold ">Action record List</h4>
+                    </div>
+                </div>
+                <div class="card card-body m-3">
                     <div class="table-responsive">
-                        <table id="Actionlist" class="table table-striped display  nowrap" style="width:100%">
-                            <thead class="thead-dark">
-                                <tr class="text-center">
-                                    <th scope="col">ActionID</th>
-                                    <th scope="col">Rootcause</th>
-                                    <th scope="col">Action</th>
-                                    <th scope="col">Report_date</th>
-                                    <th scope="col">Report_by</th>
-                                    <th scope="col">ReferenceDocument</th>
-                                    <th scope="col">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for record in records %}
-                                <tr class="">
-                                    <td>{{record.ActionID}}</td>
-                                    <td>{{record.RootCause}}</td>
-                                    <td>{{record.Action}}</td>
-                                    <td>{{record.ReportDate}}</td>
-                                    <td>{{record.ReportBy}}</td>
-                                    <td><a href="/media/{{record.ReferenceDocument}}">{{record.ReferenceDocument|default:""}}</a></td>
-                                    <td>{{record.Transaction_Number.Status}}</td>
-                                </tr>
-                                {% endfor %}
+                        <div class="table-responsive">
+                            <table id="Actionlist" class="table table-striped display  nowrap" style="width:100%">
+                                <thead class="thead-dark">
+                                    <tr class="text-center">
+                                        <th scope="col">ActionID</th>
+                                        <th scope="col">Rootcause</th>
+                                        <th scope="col">Action</th>
+                                        <th scope="col">Report_date</th>
+                                        <th scope="col">Report_by</th>
+                                        <th scope="col">ReferenceDocument</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for record in records %}
+                                    <tr class="">
+                                        <td>{{record.ActionID}}</td>
+                                        <td>{{record.RootCause}}</td>
+                                        <td>{{record.Action}}</td>
+                                        <td>{{record.ReportDate}}</td>
+                                        <td>{{record.ReportBy}}</td>
+                                        <td><a href="/media/{{record.ReferenceDocument}}">{{record.ReferenceDocument|default:""}}</a></td>
+                                        <td>{{record.Transaction_Number.Status}}</td>
+                                    </tr>
+                                    {% endfor %}
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

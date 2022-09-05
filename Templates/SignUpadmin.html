@@ -42,12 +42,12 @@
             {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
-                <div class= "d-flex justify-content-center">
+                <div class= "">
                     <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show w-100 mt-3" role="alert" >
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                         </button>
                         {{ message }}
-                        kjsfh
+                     
                     </div>
                 </div>
                 {% endfor %}
@@ -69,5 +69,12 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!--Data Table-->
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script text="javascript">
+        setTimeout(fade_out, 3000);
+        function fade_out() {
+            $("#message").fadeOut().empty();
+        }
+
+    </script>
 </body>
 </html>

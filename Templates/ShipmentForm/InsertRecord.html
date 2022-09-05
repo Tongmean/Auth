@@ -32,16 +32,18 @@
             <div class="card  " style="background-image: url('https://cdn.pixabay.com/photo/2018/02/17/14/15/template-3160023_1280.jpg')">
                 <div class="card-header text-center text-info bg-secondary" style="background-image: url('')">
                     <h1>Discrepancy Shipment Form Record</h1>
-                    {% if messages %}
-                        <ul class="messages">
-                            {% for message in messages %}
-                                <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show " role="alert">
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                    </button>
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
-                        </ul>
+                    {% if request.user.groups.get.name == 'User' %}
+                        {% if messages %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                    <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show " role="alert">
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                        </button>
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            </ul>
+                        {% endif %} 
                     {% endif %} 
                 </div>
                 <div  class="card-body" style="background-image: url('')">

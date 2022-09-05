@@ -60,21 +60,22 @@
                     {{form|crispy}}
                     <a href="managemanagement" class="btn btn-warning w-25">Back</a>
                     <button type="Submit" class="btn btn-primary w-25" style="margin-buttom:400px">Create user</button>
-                </form>
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <div id="message" class="mt-4 alert me-4 {{ message.tags }} alert-primary alert-dismissible fade show " role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                </button>
+                                
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </ul>
+                    {% endif %} 
+                </form>  
             </div>
-            {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                <div class= "d-flex justify-content-center">
-                    <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show m-2 d-flex justify-content-center" role="alert" style="width:35%;">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                        </button>
-                        {{ message }}
-                    </div>
-                </div>
-                {% endfor %}
-            </ul>
-            {% endif %}     
+    
+            
         </div>
 
         
@@ -93,5 +94,12 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!--Data Table-->
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script text="javascript">
+        setTimeout(fade_out, 1000);
+        function fade_out() {
+            $("#message").fadeOut().empty();
+        }
+
+    </script>
 </body>
 </html>

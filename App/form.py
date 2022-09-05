@@ -9,7 +9,7 @@ from .models import *
 class CreateUserForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['username', 'password1', 'password2']
+        fields = ['username','email' , 'password1', 'password2']
 #
 class updateProfile(ModelForm):
     class Meta:

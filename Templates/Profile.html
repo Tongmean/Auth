@@ -110,7 +110,7 @@
                 <h3 class="ps-2 text-white">Discrepancy Portal</h3>
             </div>
         </div>
-        <div class="row">
+        <div class="row d-flex justify-content-center align-items-start m-4">
                 {% if messages %}
                 <ul class="messages text-center">
                     {% for message in messages %}
@@ -122,8 +122,8 @@
                     {% endfor %}
                 </ul>
                 {% endif %} 
-            <div class="col-md-5">
-                <div class=" body-card m-5 "  style="padding:40px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) ; border:1px solid grey; border-radius:10px;">
+            <div class="col-xl-5 col-lg-5 col-md-10 col-sm-10 mb-1 pb-5">
+                <div class=" body-card"  style="pading:10px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) ; border:1px solid grey; border-radius:10px;">
                     <hr class="mt-5">
                     <h3 class="text-center ">Account Setting</h3>
                     <hr>
@@ -133,13 +133,13 @@
                         <p>Date_Created: <span class="fs-5">{{request.user.Profile.Date_Created}}</span></p>
                         <p>Last Login: <span class="fs-5">{{request.user.last_login}}</span></p>
                     </div>
-                    <div class="flex d-flex justify-content-center align-items-center mt-5" >
+                    <div class="flex d-flex justify-content-center align-items-center mt-5 pb-3" >
                         <img class="shadow rounded-circle" alt="Your Profile" style="width: 180px; height: 180px; object-fit:cover" src="{{request.user.Profile.Profile_Img.url}}"/>
                     </div>
                 </div>       
             </div>
-            <div class="col-md-6  m-5 h-75 " style="background-img:linear-gradient(90deg, #fdfbfb 0%, #ebedee 100%);  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border:2px solid grey; border-radius:20px;">
-                <div class="card-body mt-5 ">
+            <div class="col-xl-5 col-lg-5 col-md-10 col-sm-10 " style="background-img:linear-gradient(90deg, #fdfbfb 0%, #ebedee 100%);  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border:2px solid grey; border-radius:20px;">
+                <div class="card-body">
                     <form method="POST" action="" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{form|crispy}}

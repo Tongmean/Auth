@@ -5,6 +5,7 @@ from multiprocessing import context
 import re
 from tokenize import group
 from urllib import response
+from xml.etree.ElementTree import PI
 from xmlrpc.client import DateTime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
@@ -20,10 +21,78 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import get_user_model
 
-#Date
+#Datecheat
 from datetime import date , datetime
 from django.utils.timezone import datetime # Create your views here.
 import csv
+from django.http import FileResponse
+import io
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+@login_required(login_url='Loginpage')
+def Genpdf(request, pk):
+    buf = io.BytesIO()
+    c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+    textob = c.beginText()
+    textob.setTextOrigin(inch, inch)
+    textob.setFont("Helvetica", 12)
+    records = ActionCause.objects.filter(Transaction_Number__Transaction_Number = pk )
+    print(records)
+    lines = [""]
+
+    for record in records:
+        lines.append("-------------------------------")
+        
+        
+        #----
+        lines.append("")
+        lines.append("Discrepancy record Detail  :"  + str(record.Transaction_Number.Transaction_Number))
+        lines.append("--------------------------")
+        lines.append("")
+        lines.append("Transaction_Number    :  "+str(record.Transaction_Number.Transaction_Number))
+        lines.append("Area"+"               :  "+ str(record.Transaction_Number.Area))
+        lines.append("Flight Number         :  "+str(record.Transaction_Number.FlightNumber))
+        lines.append("Mode of transportation:  "+str(record.Transaction_Number.ModeOfTranSportation))
+        lines.append("Forwarder             :  "+str(record.Transaction_Number.Forwarder))
+        lines.append("Shipper Name          :  "+str(record.Transaction_Number.ShipperName))
+        lines.append("Shipper Country       :  "+str(record.Transaction_Number.ShipperCountry))
+        lines.append("Declaration Number    :  "+str(record.Transaction_Number.CustomDeclarationNumber))
+        lines.append("Invoice Number        :  "+str(record.Transaction_Number.InvoiceNumber))
+        lines.append("Pick Ticketor         :  "+str(record.Transaction_Number.PickTicket))
+        lines.append("Bill of landing       :  "+str(record.Transaction_Number.BillOfLanding))
+        lines.append("Supplier Name         :  "+str(record.Transaction_Number.SupplierNAme))
+        lines.append("Part Number           :  "+str(record.Transaction_Number.PartNumber))
+        lines.append("Invoice Quantity      :  "+str(record.Transaction_Number.InvoiceQuantity))
+        lines.append("Invoice UOM           :  "+str(record.Transaction_Number.InvoiceOUM))
+        lines.append("Unit Price            :  "+str(record.Transaction_Number.UnitPrice))
+        lines.append("Total Package         :  "+str(record.Transaction_Number.TotalPackage))
+        lines.append("Date of Incident      :  "+str(record.Transaction_Number.DateOfIncident))
+        lines.append("Type of Discrepancy   :  "+str(record.Transaction_Number.TypeOfDiscrepancy))
+        lines.append("Detail of Discrepancy :  "+str(record.Transaction_Number.DetailOfDiscrepancy))
+        lines.append("Submit By             :  "+str(record.Transaction_Number.SubmitBy))
+        lines.append("Submit Date           :  "+str(record.Transaction_Number.SubmitDate))
+        lines.append("Status                :  "+str( record.Transaction_Number.Status))
+        lines.append("-----------------------------------------    ")
+        lines.append("")
+        lines.append("RootCause         :  " + str(record.RootCause))
+        lines.append("Action            :  " + str(record.Action))
+        lines.append("Report Date       :  " + str(record.ReportDate))
+        lines.append("Report By         :  " + str(record.ReportBy))
+  
+
+    
+    for line in lines:
+        textob.textLine(line)
+    
+    c.drawText(textob)
+    c.showPage()
+    c.save()
+    buf.seek(0)
+    return FileResponse(buf, as_attachment=True, filename = 'Discrepancy Detail ' + str(pk) + '.pdf')
+
+
+@login_required(login_url='Loginpage')
 def GenCSV(request):
     response = HttpResponse(content_type = 'text/csv')
     response['Content-Disposition'] = 'attachment; filename = Discrepancy-List.csv'
@@ -81,19 +150,24 @@ def index(request):
 def SignUpuser(request):
     form = CreateUserForm()
     if request.method == "POST":
-        form = CreateUserForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            username = form.cleaned_data.get('username')
-            
-            group = Group.objects.get(name='User')
-            user.groups.add(group)
-            
-            messages.success(request, 'The account was Created for :' + ' ' + username )
+        username = request.POST.get('username')
+        if User.objects.filter(username = username).exists():
+            messages.success(request, 'The username Already Exist :' + ' ' + username )
             # return redirect('managemanagement')
         else:
-            messages.ERROR(request, 'The account was Created for :' + ' ' + username )
-            # return HttpResponse("U from got some Problem:")
+            form = CreateUserForm(request.POST)
+            if form.is_valid():
+                user = form.save()
+                username = form.cleaned_data.get('username')
+                
+                group = Group.objects.get(name='User')
+                user.groups.add(group)
+                
+                messages.success(request, 'The account was Created for :' + ' ' + username )
+                return redirect('managemanagement')
+            else:
+                messages.ERROR(request, 'The account was Created for :' + ' ' + username )
+                # return HttpResponse("U from got some Problem:")
         
     return render(request, 'SignUpuser.html', {'form':form})
 
@@ -134,14 +208,27 @@ def LogOutUser(request):
     logout(request)
     return redirect('Loginpage')
 
+@login_required(login_url='Loginpage')
+@admin_only
 def managemanagement(request):
 
     all_users = Profile.objects.all()
     return render(request, 'Usermanagement.html',{'all_users':all_users})
 
 @login_required(login_url='Loginpage')
+@admin_only
+def DeleteUser(request, pk):
+    Delete = User.objects.filter( id = pk)
+    Delete.delete()
+    print(Delete)
+    messages.success(request, 'You have delete User Successfully')
+    return redirect('managemanagement')
+
+
+# Delete.delete()
+@login_required(login_url='Loginpage')
 def DiscrepancyRecord(request):
-    records = ActionCause.objects.all()
+    records = ActionCause.objects.filter(Transaction_Number__Status="Close").order_by('-Transaction_Number')
     
     return render(request,'DiscrepancyList.html', {'records':records})
 
@@ -162,16 +249,13 @@ def MyProfile(request):
     return render(request, 'Profile.html',{'form':form})
 
 def Dashboard(request):
+    #Typeof
     Shortage = ShipmentForm.objects.filter(Status ='Close', TypeOfDiscrepancy = 'Shortage Quantity')
     Over = ShipmentForm.objects.filter(Status ='Close', TypeOfDiscrepancy = 'Over Quantity')
     Wrong = ShipmentForm.objects.filter(Status ='Close', TypeOfDiscrepancy = 'Wrong Parts')
     Mixed = ShipmentForm.objects.filter(Status ='Close', TypeOfDiscrepancy = 'Mixed Parts')
     PO = ShipmentForm.objects.filter(Status ='Close', TypeOfDiscrepancy = 'PO Problem')
-    
-    records = ShipmentForm.objects.filter(Status= 'Close').values()
-    myFilter = ShipmentFilter(request.GET, queryset= records)
-    records = myFilter.qs
-    #Dashboard Filter
+    #Dashboard Filter type
     Shortage = ShipmentFilter(request.GET, queryset= Shortage)
     Shortage = Shortage.qs.count()
     
@@ -186,10 +270,53 @@ def Dashboard(request):
     
     PO = ShipmentFilter(request.GET, queryset= PO)
     PO = PO.qs.count()
-       
+    #Area
+    local = ShipmentForm.objects.filter(Status ='Close', Area = 'local')
+    Oversea = ShipmentForm.objects.filter(Status ='Close', Area = 'Oversea')
+    
+    local = ShipmentFilter(request.GET, queryset= local)
+    local = local.qs.count()
+    
+    Oversea= ShipmentFilter(request.GET, queryset= Oversea)
+    Oversea = Oversea.qs.count()
+    #Invoice
+    Each = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Each')
+    Carton = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Carton')
+    Pail = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Pail')
+    Piece = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Piece')
+    Pair = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Pair')
+    Bottle = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Bottle')
+    
+    Each = ShipmentFilter(request.GET, queryset= Each)
+    Each = Each.qs.count()
+    
+    Carton = ShipmentFilter(request.GET, queryset= Carton)
+    Carton = Carton.qs.count()
+    
+    Pail = ShipmentFilter(request.GET, queryset= Pail)
+    Pail = Pail.qs.count()
+    
+    Piece = ShipmentFilter(request.GET, queryset= Piece)
+    Piece = Piece.qs.count()
+    
+    Pair = ShipmentFilter(request.GET, queryset= Pair)
+    Pair = Pair.qs.count()
+    
+    Bottle = ShipmentFilter(request.GET, queryset= Bottle)
+    Bottle = Bottle.qs.count()
+    
+    
+    
+    records = ShipmentForm.objects.filter(Status= 'Close').values()
+    myFilter = ShipmentFilter(request.GET, queryset= records)
+    records = myFilter.qs       
     context = {'records':records, 'myFilter':myFilter,
                'Shortage':Shortage, 'Over':Over
                , 'Wrong':Wrong, 'Mixed':Mixed, 'PO':PO, 
+               'Oversea':Oversea, 'local':local,
+               'Each':Each, 'Carton':Carton, 'Pail':Pail,
+               'Piece':Piece, 'Pair':Pair, 'Bottle':Bottle
+               
     }
     return render(request,'Dashboard.html', context)
 
@@ -237,7 +364,7 @@ def InsertRecord(request):
 @user_only
 def MyActivities(request):
     useremail = request.user.email
-    record = ShipmentForm.objects.filter(SubmitBy = useremail )
+    record = ShipmentForm.objects.filter(SubmitBy = useremail ).order_by("-Transaction_Number").values
     return render(request, 'ShipmentForm/MyActivities.html', {'records':record})
 
 @login_required(login_url='Loginpage')
@@ -266,10 +393,7 @@ def Home(request):
                'month':month, 'year':year, 'week':week }
     return render(request,'Home.html', context)
 
-                        # datetime_published__year='2008', 
-                        #  datetime_published__month='03', 
-                        #  datetime_published__day='27')
-                        #'all':all
+
 @login_required(login_url='Loginpage')
 def Update(request, pk):
     Update = ShipmentForm.objects.get( Transaction_Number = pk)
@@ -341,7 +465,7 @@ def MyTask(request):
 
 
 
-
+@login_required(login_url='Loginpage')
 def HomePage(request):
     record = ActionCause.objects.all().count()
     return render(request,'HomePage.html')

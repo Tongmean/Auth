@@ -15,6 +15,8 @@ urlpatterns = [
     path('HomePage', views.HomePage, name='HomePage'),
     path('GenCSV', views.GenCSV, name='GenCSV'),
     path('managemanagement', views.managemanagement, name='managemanagement'),
+    path('DeleteUser/<int:pk>', views.DeleteUser, name='DeleteUser'),
+    path('Genpdf/<int:pk>', views.Genpdf, name='Genpdf'),
     
     #ShipmentForm
     path('ShipmentRecordList', views.ShipmentRecondList, name='ShipmentRecordList'),

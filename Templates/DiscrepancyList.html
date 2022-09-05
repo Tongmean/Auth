@@ -161,10 +161,11 @@
                                                 <div class="container-fluid">
                                                     <div class="row">
                                                         <div class="col-3">
+                                                            <h6>Submit Date :{{record.Transaction_Number.SubmitDate}}</h6>
                                                             <h6>Transaction Number :{{record.Transaction_Number.Transaction_Number}}</h6>
                                                             <h6>Mode of Transportation :{{record.Transaction_Number.ModeOfTranSportation}}</h6>
                                                             <h6>Detail of Discrepancy :{{record.Transaction_Number.DetailOfDiscrepancy}}</h6>
-                                                            <h6>Action :{{record.Action}}</h6>
+                                                            
                                                         </div>
                                                         <div class="col-4">
                                                             <h6>Submit By :{{record.Transaction_Number.SubmitBy}}</h6>
@@ -174,7 +175,7 @@
                                                             <h6>RootCause :{{record.RootCause}}</h6>
                                                         </div>
                                                         <div class="col-4">
-                                                            <h6>Submit Date :{{record.Transaction_Number.SubmitDate}}</h6>
+                                                            <h6>Action :{{record.Action}}</h6>
                                                             {%if record.Transaction_Number.ProcessingTime != 'None'%}
                                                             <h6>Processing Time :{{record.Transaction_Number.ProcessingTime|default:""}}</h6>
                                                             {% endif %}
@@ -372,11 +373,11 @@
     <!--DataTable-->
     <script>
         $("document").ready(function () {
-          $("#DiscrepancyRecord").dataTable({
-            searching: true,
-
-          });
+            $("#DiscrepancyRecord").dataTable({
+                order: [[0, 'desc']],
+            });
         });
     </script> 
+
 </body>
 </html>
