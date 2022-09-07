@@ -17,6 +17,7 @@ urlpatterns = [
     path('managemanagement', views.managemanagement, name='managemanagement'),
     path('DeleteUser/<int:pk>', views.DeleteUser, name='DeleteUser'),
     path('Genpdf/<int:pk>', views.Genpdf, name='Genpdf'),
+    path('resetPass/<str:UserID>', views.resetPass, name='resetPass'),
     
     #ShipmentForm
     path('ShipmentRecordList', views.ShipmentRecondList, name='ShipmentRecordList'),

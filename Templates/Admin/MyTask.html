@@ -207,15 +207,9 @@
     <!--DataTable-->
     <script>
         $("document").ready(function () {
-            $("#Action_Shipmentform").dataTable({
-                searching: true,
-            });
-        });
-    </script>
-    <script>
-        $("document").ready(function () {
             $("#Actionlist").dataTable({
                 searching: true,
+                order: [[3, 'desc']],
             });
         });
     </script>

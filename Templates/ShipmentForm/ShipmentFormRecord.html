@@ -118,16 +118,18 @@
                     <h4 class="" style="display:inline; font-weight:bold ">Shipment Record List</h4>
                 </div>
                 <div class="card-body">
-                    {% if messages %}
-                        <ul class="messages">
-                            {% for message in messages %}
-                                <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show " role="alert">
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                    </button>
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
-                        </ul>
+                    {% if message.tags == 'success' %}
+                        {% if messages %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                    <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show " role="alert">
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                        </button>
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            </ul>
+                        {% endif %} 
                     {% endif %} 
                     <p class="card-text">
                         <div class="status-filter">

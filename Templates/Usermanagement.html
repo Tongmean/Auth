@@ -80,7 +80,7 @@
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
-
+        
 
     </style>
 
@@ -94,7 +94,7 @@
                 X
             </button>
         </div>
-        <div class="">
+        <div>
             <div>
                 <div>
                     {% include 'Sidebar.html' %} 
@@ -148,12 +148,12 @@
                                 <th class="text-center">Full Name</th>
                                 <th class="text-center">Description</th>
                                 <th class="text-center">Date_Created</th>
-                                <th class="text-center">Delete</th>
+                                <th class="text-center">Action</th>
                                 
                             </tr>
                         </thead>
                         <tbody>
-                            {% for i in all_users%}
+                            {% for i in all_users %}
                             <tr class="text-center">
                                 <td style=''>{{i.user.id}}</td>
                                 <td style=''>{{i.user}}</td>
@@ -163,9 +163,54 @@
                                 <td style='  '>{{i.Description}}</td>
                                 <td style=''>{{i.user.date_joined}}</td>
                                 {% if i.user.groups.get.name == 'User' %}
-                                <td style=''><a href = {% url 'DeleteUser' i.user.id  %} class="btn btn-danger btn-sm">Delete</a></td>
+                                <td style=''>
+                                    <a href = {% url 'DeleteUser' i.user.id  %} class="btn btn-danger btn-sm">Delete</a>
+                                    {% comment %} <a href = {% url 'resetPass' i.user  %} class="btn btn-secondary btn-sm">Reset </a> {% endcomment %}
+                                    <a class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#{{i.user}}">Reset</a>
+
+                                </td>
+                                <div class="modal fade" id="{{i.user}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-md">
+                                        <div class="modal-content ">
+                                            <div class="modal-header my-3 ms-4">
+                                                <h4 class="modal-title" id=""><p class="">Reset Password</p></h4>
+                                                <button type="button" class="btn-close me-3 my-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class=" container-fluid ActionForm" >
+                                                    <form  method='POST' enctype='multipart/form-data' Action='resetPass/{{i.user}}'>
+                                                        {% csrf_token %}
+                                                        <div class="row">
+                                                            <div class="Signup">
+                                                                New password<span class="asteriskField">*</span> </label> <input type="password" name="new_password1" autocomplete="new-password" class="textinput textInput form-control" required="" id="id_new_password1"> <small id="hint_id_new_password1" class="form-text text-muted"><ul><li>Your password can’t be too similar to your other personal information.</li><li>Your password must contain at least 8 characters.</li><li>Your password can’t be a commonly used password.</li><li>Your password can’t be entirely numeric.</li></ul></small> </div> <div id="div_id_new_password2" class="mb-3"> <label for="id_new_password2" class="form-label requiredField">
+                                                                New password confirmation<span class="asteriskField">*</span> </label> <input type="password" name="new_password2" autocomplete="new-password" class="textinput textInput form-control" required="" id="id_new_password2"> </div>
+                                                
+                                                               
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex justify-content-end p-2 mt-5">
+                                                            <button type="Submit" name="submit" class="btn btn-danger m-1"  data-bs-dismiss="modal">Close</button>
+                                                            <button type="Submit" name="submit" class="btn btn-primary m-1">Reset</button>
+                                                        </div>
+                                
+                                                    </form>
+                                                </div>
+                                                <div class="container-fluid">
+                             
+                                            
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <div class="row ">
+                                                
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 {% elif  i.user.groups.get.name == 'admin' %}
-                                <td style=''><a class="btn btn-warning btn-sm">Update</a></td>
+                                <td style=''><a class="btn btn-warning btn-sm">---</a></td>
                                 {% endif %}
                             </tr>
                             {% endfor %}
@@ -173,6 +218,7 @@
                     </table>
                     
             </div>
+     
         </div>
 
     </div>
@@ -214,7 +260,7 @@
         $("document").ready(function () {
           $("#usermanagerment").dataTable({
    
-
+            "order": [[6, 'desc']]
           });
           
         });

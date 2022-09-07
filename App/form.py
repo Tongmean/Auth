@@ -1,16 +1,23 @@
 from dataclasses import field
 import email
 from email.headerregistry import Group
+from pyexpat import model
 from socket import fromshare
 from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 from django.contrib.auth.models import User
 from .models import *
 class CreateUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username','email' , 'password1', 'password2']
+        
 #
+class SetPasswordForm(SetPasswordForm):
+    class Meta:
+        model = SetPasswordForm
+        field = '__all__'
+
 class updateProfile(ModelForm):
     class Meta:
         model = Profile

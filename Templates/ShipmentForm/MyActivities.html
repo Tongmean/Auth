@@ -142,16 +142,18 @@
                     <h4 class="" style="display:inline; font-weight:bold ">My Activities</h4>
                 </div>
                 <div class="card-body">
-                    {% if messages %}
-                        <ul class="messages">
-                            {% for message in messages %}
-                                <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show " role="alert">
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                    </button>
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
-                        </ul>
+                    {% if message.tags == 'success' %}
+                        {% if messages %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                    <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show " role="alert">
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                        </button>
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            </ul>
+                        {% endif %} 
                     {% endif %} 
                     <p class="card-text">
                         <div class="table-responsive">
@@ -165,7 +167,7 @@
                                 </thead>
                                 <tbody>
                                     {% for record in records %}
-                                    <tr>
+                                    <tr >
                                         <td>
                                             <div class="Activities">
                                                 <div class="container-fluid">
@@ -183,7 +185,6 @@
                                                             <h6>Date of Incident :{{record.DateOfIncident}}</h6>
                                                         </div>
                                                         <div class="col-3">
-                                                            <h6>Detail of Discrepancy :{{record.DetailOfDiscrepancy}}</h6>
                                                             <h6>Submit Date :{{record.SubmitDate}}</h6>
                                                             {%if record.Status == 'Close' %}
                                                                 <h6>Processing Time :{{record.ProcessingTime|default:""}}</h6>

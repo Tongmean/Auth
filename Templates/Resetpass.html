@@ -21,56 +21,60 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/a4f690b883.js" crossorigin="anonymous"></script>
     <style>
-        .LoginPage {
-            background-color:white;
-            padding:50px;
-            border: 1px solid black;
-            border-radius:30px;
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-            width:100%;
-        }
-        .messagesLogin {
+        
+        .Signup {
             display:flex;
+            justify-content: center;
+            align-items: center;
             
         }
+
+        body {
+            height:100vh;
+            display: flex;
+            justify-content: center;
+            align-items:center;
+        }
+
+        
+
+        label {
+            font-weight: bold;
+        }
+
     </style>
 </head>
 
 <body>
     {% load crispy_forms_tags %}
-    <div class=container row>
-        <div class="container-fluid d-flex justify-content-center align-items-center" style="height:100vh; ">
-            <form Action='' method='POST' enctype='multipart/form-data'>
-            {% csrf_token %}
-
-                <div class = "align-items-center m-4 LoginPage " style="">
-                    <div class="mb-3">
-                    <div>
-                        <label for="" class="form-label">Username</label>
-                        <input type="text" name="username" class="form-control" >
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Password</label>
-                        <input type="password" name="password" class="form-control" >
-                        <button type="Submit" class="mt-3 btn btn-primary w-100" >Log In</button>
-                    </div> 
+    <div class="container-fluid" >
+        <div class="row">
+            <div class="Signup">
+                <form Action='' method='POST' enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    {{form|crispy}}
+                    <input name="action" onclick="history.go(-2);  return false;" class="btn btn-warning m-1" type="submit"  value="Cancel"/>
+                    <button type="Submit" class="btn btn-primary w-25" style="margin-buttom:400px">Reset </button>
                     {% if messages %}
-                    <ul class="messages me-4 text-center">
+                    <ul class="messages">
                         {% for message in messages %}
-                            <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show " role="alert">
+                            <div id="message" class="mt-4 alert me-4 {{ message.tags }} alert-primary alert-dismissible fade show " role="alert">
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                                 </button>
+                                
                                 {{ message }}
-                                {% comment %} <p class="text-danger">{{ message.tags }}</p> {% endcomment %}
                             </div>
                         {% endfor %}
                     </ul>
                     {% endif %} 
-                </div>
-            </form>
+                </form>  
+            </div>
+    
+            
         </div>
-    </div>
 
+        
+    </div>
    
     </script>
     <!-- Bootsrap-Js-link-->
@@ -86,7 +90,7 @@
     <!--Data Table-->
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script text="javascript">
-        setTimeout(fade_out, 2000);
+        setTimeout(fade_out, 1000);
         function fade_out() {
             $("#message").fadeOut().empty();
         }

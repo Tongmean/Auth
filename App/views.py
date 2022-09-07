@@ -1,6 +1,7 @@
 from asyncore import write
 from curses.ascii import HT
 from email import message
+from django.contrib.sessions.models import Session
 from multiprocessing import context
 import re
 from tokenize import group
@@ -13,9 +14,10 @@ from .models import *
 from django.contrib import messages
 from .filter import *
 #Auth
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from .decorator import unauthenticated_User, admin_only, allowed_users, user_only
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 from .form import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
@@ -166,7 +168,7 @@ def SignUpuser(request):
                 messages.success(request, 'The account was Created for :' + ' ' + username )
                 return redirect('managemanagement')
             else:
-                messages.ERROR(request, 'The account was Created for :' + ' ' + username )
+                messages.ERROR(request, 'Please Check again' )
                 # return HttpResponse("U from got some Problem:")
         
     return render(request, 'SignUpuser.html', {'form':form})
@@ -199,9 +201,12 @@ def LoginPage(request):
         user = authenticate(request, username = username, password = password)
         if user is not None:
             login(request, user)
+            messages.info(request, 'We have '+ str(Shipform) + ' Forms to insert AddAction')
+            return redirect('Home')
+        else:
+            messages.info(request, 'Please input correctly')
             
-        messages.success(request, 'We have '+ str(Shipform) + ' Forms to insert AddAction')
-        return redirect('Home')
+    
     return render(request, 'LoginPage.html',)
 
 def LogOutUser(request):
@@ -211,9 +216,33 @@ def LogOutUser(request):
 @login_required(login_url='Loginpage')
 @admin_only
 def managemanagement(request):
-
+    # sessions = Session.objects.filter(expire_date__gte=datetime.now())
+    # # session = request.Session
+    # print(sessions)
+    
+    
     all_users = Profile.objects.all()
     return render(request, 'Usermanagement.html',{'all_users':all_users})
+
+
+@login_required(login_url='Loginpage')
+@admin_only
+def resetPass(request, UserID):
+    u = User.objects.get(username=UserID)
+    form = SetPasswordForm(u)
+    if request.method == 'POST':
+        form = SetPasswordForm(user = u , data = request.POST)
+        if form.is_valid():
+           form.save()
+           update_session_auth_hash(request, form.user)
+           messages.success(request, 'Password have change successfully')
+           return redirect('managemanagement')
+        else:
+            messages.error(request, 'Please try again')
+        
+    
+    return redirect('managemanagement')
+
 
 @login_required(login_url='Loginpage')
 @admin_only
@@ -307,7 +336,9 @@ def Dashboard(request):
     
     
     
-    records = ShipmentForm.objects.filter(Status= 'Close').values()
+    record = ShipmentForm.objects.filter(Status= 'Close')
+    records = record.select_related()
+    # print(records)
     myFilter = ShipmentFilter(request.GET, queryset= records)
     records = myFilter.qs       
     context = {'records':records, 'myFilter':myFilter,
@@ -325,8 +356,7 @@ def Dashboard(request):
 @user_only
 def ShipmentRecondList(request):
     record = ShipmentForm.objects.all()
-    
-    
+ 
 
     return render(request,'ShipmentForm/ShipmentFormRecord.html', {'records':record})
 
@@ -343,7 +373,7 @@ def InsertRecord(request):
             f.SubmitBy = useremail
             f.save()
             messages.success(request, 'Your form was Submit successfully')
-            return redirect('ShipmentRecordList')
+            return redirect('MyActivities')
         else:
             return HttpResponse('UR form get some Error')
             messages.warning(request, 'Please correct Your form')
@@ -355,7 +385,7 @@ def InsertRecord(request):
             f.SubmitBy = useremail
             f.save()
             messages.success(request, 'Your form was Save successfully')
-            return redirect('ShipmentRecordList')
+            return redirect('MyActivities')
         else:
             messages.warning(request, 'Please correct your form')
     return render(request, 'ShipmentForm/InsertRecord.html',{'form':form})
@@ -398,18 +428,43 @@ def Home(request):
 def Update(request, pk):
     Update = ShipmentForm.objects.get( Transaction_Number = pk)
     form = Shipmentrecord( instance=Update )
-    if request.method == 'POST':
-        useremail = request.user.email
+    # if request.method == 'POST':
+    #     useremail = request.user.email
+    #     form = Shipmentrecord(request.POST, request.FILES, instance=Update)
+    #     if form.is_valid():
+    #         f= form.save(commit=False)
+    #         f.SubmitBy = useremail
+    #         f.Status= 'Submitted'
+    #         f.save()
+    #         messages.success(request, 'You have update Successfully')
+    #         return redirect('MyActivities')
+    #     else:
+    #         messages.warning(request, 'You have got some errors')
+            
+    useremail = request.user.email        
+    if 'submit' in request.POST: 
         form = Shipmentrecord(request.POST, request.FILES, instance=Update)
         if form.is_valid():
-            f= form.save(commit=False)
-            f.SubmitBy = useremail
+            f = form.save(commit=False)
             f.Status= 'Submitted'
+            f.SubmitBy = useremail
             f.save()
-            messages.success(request, 'You have update Successfully')
+            messages.success(request, 'Your form was Submit successfully')
             return redirect('MyActivities')
         else:
-            messages.warning(request, 'You have got some errors')
+            return HttpResponse('UR form get some Error')
+            messages.warning(request, 'Please correct Your form')
+    if 'save' in request.POST: 
+        form = Shipmentrecord(request.POST, request.FILES, instance=Update)
+        if form.is_valid():
+            f = form.save(commit=False)
+            f.Status= 'Saved'
+            f.SubmitBy = useremail
+            f.save()
+            messages.success(request, 'Your form was Save successfully')
+            return redirect('MyActivities')
+        else:
+            messages.warning(request, 'Please correct your form')
     return render(request,'ShipmentForm/Update.html',{'form':form})
 
 def Delete(request, pk):
@@ -465,7 +520,7 @@ def MyTask(request):
 
 
 
-@login_required(login_url='Loginpage')
+# @login_required(login_url='Loginpage')
 def HomePage(request):
     record = ActionCause.objects.all().count()
     return render(request,'HomePage.html')
