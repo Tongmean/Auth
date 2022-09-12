@@ -112,17 +112,19 @@
             padding-right:10px;
             border:2px solid white;
             justify-content:center;
-            margin-right:50px;
+            
+
         }
 
-        .myChartArea iframe {
-            display: none;
+        .myChartArea > iframe {
+            display: block;
             position: relative !important;
         }
-        .myChartInvoiceUOM iframe {
-            display: none;
+        .myChartInvoiceUOM > iframe {
+            display: block;
             position: relative !important;
         }
+   
 
     </style>
 
@@ -174,29 +176,29 @@
                         </form>
                     </div>
                 </div>
-                <div class="row mx-auto d-flex justify-content-between align-items-center ">
-                    <div class="border col-xl-6 col-lg-5  col-md-12 col-sm-12 shadow" >
-                        <div class="myChartArea">
+                <div class="row mx-auto d-flex justify-content-center align-items-center">
+                    <div class="border col-xl-6 col-lg-5  col-md-12 col-sm-12 d-flex justify-content-center align-items-center shadow p-5" >
+                        <div class="myChartArea flex d-flex justify-content-center align-items-center">
                             <canvas id="myChartArea" style=""></canvas>
                         </div>
                     </div>
-                    <div class="border col-xl-6 col-lg-5  col-md-12 col-sm-12 shadow">
+                    <div class="border col-xl-6 col-lg-5  col-md-12 col-sm-12  d-flex justify-content-center align-items-center shadow p-5">
                         <div class="myChartArea ">
                             <canvas id="myChartInvoiceUOM" style=""></canvas>
                         </div>
                     </div>
 
                 </div>
-                <div class="row mx-auto py-4 pb-2" style="">
-                    <div class="border col-xl-6 col-lg-6  col-md-12 col-sm-12 shadow">
+                <div class="row mx-auto py-4" style="">
+                    <div class="border col-xl-6 col-lg-6  col-md-12 col-sm-12 shadow  ">
                         <canvas id="TypeOfDiscrepancybar" style="width:100%;max-width:600px" class="" >
                             <!--bar-->
                         </canvas>
                     </div>
                 
-                    <div class="border col-xl-6 col-lg-6  col-md-12 col-sm-12 shadow d-flex justify-content-center">
+                    <div class="border col-xl-6 col-lg-6  col-md-12 col-sm-12 shadow flex d-flex justify-content-center align-items-center">
                     
-                        <div  id="TypeOfDiscrepancypie"  style="width:100%" class="">
+                        <div  id="TypeOfDiscrepancypie"  style="width:75%" class="flex d-flex justify-content-center align-items-center">
                             <!--Pie-->
                         </div>
                     </div>
@@ -489,14 +491,13 @@
     </script>
     <!--Invoice-->
     <script>
-        var xValues = ["Each", "Carton", "Pail", "Piece", "Pair", "Bottle"];
-        var yValues = [{{Each}}, {{Carton}}, {{Pail}}, {{Piece}}, {{Pair}},{{Bottle}}];
+        var xValues = ["Air", "Truck", "Ocean"];
+        var yValues = [{{Air}}, {{Truck}}, {{Ocean}}];
         var barColors = [
           "#b91d47",
           "#00aba9",
           "#2b5797",
-          "#e8c3b9",
-          "#1e7145"
+       
         ];
         
         new Chart("myChartInvoiceUOM", {
@@ -511,7 +512,8 @@
           options: {
             title: {
               display: true,
-              text: "Invioce UOM"
+              text: "Mode Of TranSportation",
+             
             }
           }
         });

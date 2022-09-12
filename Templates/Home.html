@@ -110,9 +110,18 @@
               border-color: orange;
             }
         }
-
-       
-
+        {% comment %} .home {
+            margin-left:50px !important;
+            margin-right:50px !important;
+        }
+        {% endcomment %}
+        .barchart{
+            border-right:3px solid blue;
+        }
+        .Weekly{
+            box-shadow:5px 2px #227c54;
+            
+        }
     </style>
 
 </head>
@@ -159,7 +168,9 @@
                             <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show " role="alert">
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                                 </button>
+                                {% if message.tags == 'info' %}
                                 {{ message }}
+                                {% endif %} 
                                 {% comment %} <p class="text-danger">{{ message.tags }}</p> {% endcomment %}
                             </div>
                         {% endfor %}
@@ -193,7 +204,7 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid mx-1">
+        <div class="container mt-1 home">
             <div class="row shadow h-75">
                 <div class="card">
                     <div class="card-header d-flex align-items-center py-2">
@@ -202,7 +213,7 @@
                         
                     </div>
                 </div>
-                <div class=" col-xl-6 col-lg-6 col-md-12 col-sm-12 " id=""  >
+                <div class=" col-xl-6 col-lg-6 col-md-12 col-sm-12 barchart" id=""  >
                     <!--bar-->
                     <canvas id="Homebar" style="width:100%;max-width:600px" class="" >
                         <!--bar-->
@@ -212,6 +223,12 @@
                     <!--Pie-->
                 </div>
             </div>  
+            {% comment %} <div class="row mt-3 shadow Weekly">
+                <div class="col-6">
+                    <canvas id="weekly" style=""></canvas>
+
+                <div>
+            </div> {% endcomment %}
 
         </div>
 
@@ -289,6 +306,34 @@
         }
 
     </script>
+    <!--Weekly-->
+    <script>
+        var xValues = ["Monday","Tuesday","Wendesday","Thurday","Friend","Saturday","Sunday"];
+        
+        new Chart("weekly", {
+          type: "line",
+          data: {
+            labels: xValues,
+            datasets: [{ 
+              data: [860,1140,1060,1060,1070,1110,1330],
+              borderColor: "red",
+              fill: false
+            }, { 
+              data: [1600,1700,1700,1900,2000,2700,4000],
+              borderColor: "green",
+              fill: false
+            }, { 
+              data: [300,700,2000,5000,6000,4000,2000],
+              borderColor: "blue",
+              fill: false
+            }]
+          },
+          options: {
+            legend: {display: false}
+          }
+        });
+    </script>
+        
     
 
 </body>

@@ -204,7 +204,7 @@ def LoginPage(request):
             messages.info(request, 'We have '+ str(Shipform) + ' Forms to insert AddAction')
             return redirect('Home')
         else:
-            messages.info(request, 'Please input correctly')
+            messages.error(request, 'Please input correctly')
             
     
     return render(request, 'LoginPage.html',)
@@ -308,32 +308,41 @@ def Dashboard(request):
     
     Oversea= ShipmentFilter(request.GET, queryset= Oversea)
     Oversea = Oversea.qs.count()
-    #Invoice
-    Each = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Each')
-    Carton = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Carton')
-    Pail = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Pail')
-    Piece = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Piece')
-    Pair = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Pair')
-    Bottle = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Bottle')
+    # #Invoice
+    # Each = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Each')
+    # Carton = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Carton')
+    # Pail = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Pail')
+    # Piece = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Piece')
+    # Pair = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Pair')
+    # Bottle = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Bottle')
     
-    Each = ShipmentFilter(request.GET, queryset= Each)
-    Each = Each.qs.count()
+    # Each = ShipmentFilter(request.GET, queryset= Each)
+    # Each = Each.qs.count()
     
-    Carton = ShipmentFilter(request.GET, queryset= Carton)
-    Carton = Carton.qs.count()
+    # Carton = ShipmentFilter(request.GET, queryset= Carton)
+    # Carton = Carton.qs.count()
     
-    Pail = ShipmentFilter(request.GET, queryset= Pail)
-    Pail = Pail.qs.count()
+    # Pail = ShipmentFilter(request.GET, queryset= Pail)
+    # Pail = Pail.qs.count()
     
-    Piece = ShipmentFilter(request.GET, queryset= Piece)
-    Piece = Piece.qs.count()
+    # Piece = ShipmentFilter(request.GET, queryset= Piece)
+    # Piece = Piece.qs.count()
     
-    Pair = ShipmentFilter(request.GET, queryset= Pair)
-    Pair = Pair.qs.count()
+    # Pair = ShipmentFilter(request.GET, queryset= Pair)
+    # Pair = Pair.qs.count()
     
-    Bottle = ShipmentFilter(request.GET, queryset= Bottle)
-    Bottle = Bottle.qs.count()
-    
+    # Bottle = ShipmentFilter(request.GET, queryset= Bottle)
+    # Bottle = Bottle.qs.count()
+    #Modeoftransportation
+    Air = ShipmentForm.objects.filter(Status ='Close', ModeOfTranSportation = 'Air')
+    Truck = ShipmentForm.objects.filter(Status ='Close', ModeOfTranSportation = 'Truck')
+    Ocean = ShipmentForm.objects.filter(Status ='Close', ModeOfTranSportation = 'Ocean')
+    Air = ShipmentFilter(request.GET, queryset= Air)
+    Air = Air.qs.count()
+    Truck = ShipmentFilter(request.GET, queryset= Truck)
+    Truck = Truck.qs.count()
+    Ocean = ShipmentFilter(request.GET, queryset= Ocean)
+    Ocean = Ocean.qs.count()
     
     
     record = ShipmentForm.objects.filter(Status= 'Close')
@@ -345,8 +354,7 @@ def Dashboard(request):
                'Shortage':Shortage, 'Over':Over
                , 'Wrong':Wrong, 'Mixed':Mixed, 'PO':PO, 
                'Oversea':Oversea, 'local':local,
-               'Each':Each, 'Carton':Carton, 'Pail':Pail,
-               'Piece':Piece, 'Pair':Pair, 'Bottle':Bottle
+               'Air':Air, 'Truck':Truck, 'Ocean':Ocean,
                
     }
     return render(request,'Dashboard.html', context)

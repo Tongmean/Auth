@@ -27,24 +27,12 @@
 
 <body>
     {% load crispy_forms_tags %}
-    <section class="bg-info" style="background-image: url('https://cdn.pixabay.com/photo/2016/11/22/19/24/archive-1850170_1280.jpg'); border-radius:90px;">
+    <section class="bg-info" style="background-image: url('https://cdn.pixabay.com/photo/2016/11/22/19/24/archive-1850170_1280.jpg');">
         <div class="container" style="background-image: url('')">
             <div class="card  " style="background-image: url('https://cdn.pixabay.com/photo/2018/02/17/14/15/template-3160023_1280.jpg')">
                 <div class="card-header text-center text-info bg-secondary" style="background-image: url('')">
                     <h1>Discrepancy Shipment Form Record</h1>
-                    {% comment %} {% if request.user.groups.get.name == 'User' %}
-                        {% if messages %}
-                            <ul class="messages">
-                                {% for message in messages %}
-                                    <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show " role="alert">
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                        </button>
-                                        {{ message }}
-                                    </div>
-                                {% endfor %}
-                            </ul>
-                        {% endif %} 
-                    {% endif %}  {% endcomment %}
+                    
                 </div>
                 <div  class="card-body" style="background-image: url('')">
                     <form Action='' method='POST' enctype='multipart/form-data' autocomplete="on">

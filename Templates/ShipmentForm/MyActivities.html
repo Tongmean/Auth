@@ -197,6 +197,9 @@
     
                                                         <div class="col-1 ps-5">
                                                             <div class="bottom-four-up">
+                                                                {%if record.Status == 'Submitted'%}
+                                                                <a class="btn btn-danger btn-sm mx-3" href={% url 'Delete' record.Transaction_Number %} >Delete</a>
+                                                                {% endif %}
                                                                 {%if record.Status == 'Saved'%}
                                                                 <a class="btn btn-success btn-sm mx-4" href={% url 'Update' record.Transaction_Number %} >Update</a>
                                                                 <a class="btn btn-danger btn-sm mx-3" href={% url 'Delete' record.Transaction_Number %} >Delete</a>

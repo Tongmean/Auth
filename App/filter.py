@@ -9,7 +9,7 @@ class ShipmentFilter(django_filters.FilterSet):
     End_Date = django_filters.DateFilter(field_name="SubmitDate", lookup_expr ='lte', label=('End date'))
     class Meta:
         model = ShipmentForm
-        fields = ['Area','TypeOfDiscrepancy']
+        fields = ['Area','TypeOfDiscrepancy','Forwarder']
         # label = {
         #     'InvoiceOUM':'InvoiceUOM',
         # }

@@ -126,23 +126,8 @@
                     <h4 class="" style="display:inline; font-weight:bold ">Discrepancy Record List</h4>
                 </div>
                 <div class="card-body">
-                    {% if messages %}
-                        <ul class="messages">
-                            {% for message in messages %}
-                                <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show " role="alert">
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                    </button>
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
-                        </ul>
-                    {% endif %} 
-                    {% comment %} <div class="card body-card mt-5 me-5 ms-5 p-4 d-flex ">
-                        <form method="GET">
-                            {{myFilter.form}}
-                            <button type="submit" class="btn btn-primary btn-sm mx-5">Filter</button>
-                        </form>
-                    </div> {% endcomment %}
+ 
+                    
                     <p class="card-text">
                         <div class="table-responsive">
                             <table id="DiscrepancyRecord" class="table table-striped display  nowrap" style="width:100%">

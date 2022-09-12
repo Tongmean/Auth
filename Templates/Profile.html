@@ -111,16 +111,18 @@
             </div>
         </div>
         <div class="row d-flex justify-content-center align-items-start m-4">
-                {% if messages %}
-                <ul class="messages text-center">
-                    {% for message in messages %}
-                        <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show " role="alert">
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                            </button>
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                </ul>
+                {% if message.tags == 'success'%}
+                    {% if messages %}
+                    <ul class="messages text-center">
+                        {% for message in messages %}
+                            <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show " role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                </button>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </ul>
+                    {% endif %} 
                 {% endif %} 
             <div class="col-xl-5 col-lg-5 col-md-10 col-sm-10 mb-1 pb-5">
                 <div class=" body-card"  style="pading:10px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) ; border:1px solid grey; border-radius:10px;">
