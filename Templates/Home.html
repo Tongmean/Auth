@@ -118,9 +118,12 @@
         .barchart{
             border-right:3px solid blue;
         }
-        .Weekly{
-            box-shadow:5px 2px #227c54;
-            
+        .weekly{
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            margin-top: 30px;     
+        }
+        .Apple {
+            border-left:3px solid darkblue;
         }
     </style>
 
@@ -171,7 +174,6 @@
                                 {% if message.tags == 'info' %}
                                 {{ message }}
                                 {% endif %} 
-                                {% comment %} <p class="text-danger">{{ message.tags }}</p> {% endcomment %}
                             </div>
                         {% endfor %}
                     </ul>
@@ -205,7 +207,7 @@
             </div>
         </div>
         <div class="container mt-1 home">
-            <div class="row shadow h-75">
+            <div class="row shadow h-75 mb-2">
                 <div class="card">
                     <div class="card-header d-flex align-items-center py-2">
                         <h4 class="py-1"><i class="fa fa-bar-chart" style="font-size:27px"></i>
@@ -222,15 +224,27 @@
                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 text-center ms-5" id="myPlot1" style="width:40%;"  >
                     <!--Pie-->
                 </div>
-            </div>  
-            {% comment %} <div class="row mt-3 shadow Weekly">
-                <div class="col-6">
-                    <canvas id="weekly" style=""></canvas>
+            
+            </div>
+            <div class="row weekly">
+                <div class=" card card-header mb-2">
+                    <h5><i class='fas fa-calendar-alt me-3' style='font-size:30px'></i>Weekly</h5>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 text-center">
+                    <div class="my-1">
+                        <h5>Mode Of TranSportation </h5>
+                    </div>
+                    <canvas id="weekly" style="width:100%;max-width:600px"></canvas>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 text-center Apple">
+                    <div class="my-1">
+                        <h5>Type of Discrepancy</h5>
+                    </div>
+                    <canvas id="myChartweekly" style="width:100%;max-width:600px"></canvas>
 
-                <div>
-            </div> {% endcomment %}
-
-        </div>
+                </div>
+            </div>
+        </div> 
 
     </div>
     <div style="height:150px">
@@ -315,15 +329,15 @@
           data: {
             labels: xValues,
             datasets: [{ 
-              data: [860,1140,1060,1060,1070,1110,1330],
+              data: [{{MonAri}},{{TuesAri}},{{WenAri}},{{ThurAri}},{{FriAri}},{{SatAri}},{{SunAri}}],
               borderColor: "red",
               fill: false
             }, { 
-              data: [1600,1700,1700,1900,2000,2700,4000],
+              data: [{{MonTruck}},{{TuesTruck}},{{WenTruck}},{{ThurTruck}},{{FriTruck}},{{SatTruck}},{{SunTruck}}],
               borderColor: "green",
               fill: false
             }, { 
-              data: [300,700,2000,5000,6000,4000,2000],
+              data: [{{MonOcean}},{{TuesOcean}},{{WenOcean}},{{ThurOcean}},{{FriOcean}},{{SatOcean}},{{SunOcean}}],
               borderColor: "blue",
               fill: false
             }]
@@ -333,8 +347,31 @@
           }
         });
     </script>
+        <!--Weekly---->
+    <script>
+        var xValues = ["Monday","Tuesday","Wendesday","Thurday","Friend","Saturday","Sunday"];
+        var yValues = [{{Mon}},{{Tues}},{{Wen}},{{Thur}},{{Fri}},{{Sat}},{{Sun}}];
         
-    
+        new Chart("myChartweekly", {
+            type: "line",
+            data: {
+            labels: xValues,
+            datasets: [{
+                fill: false,
+                lineTension: 0,
+                backgroundColor: "rgba(0,0,255,1.0)",
+                borderColor: "rgba(0,0,255,0.1)",
+                data: yValues
+            }]
+            },
+            options: {
+            legend: {display: false},
+            scales: {
+                yAxes: [{ticks: {min:0 , max:{{week}}+10  }}],
+            }
+            }
+        });
+    </script>
 
 </body>
 

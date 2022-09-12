@@ -426,9 +426,51 @@ def Home(request):
     month = ActionCause.objects.filter(ReportDate__month = this_month ).count()
     year = ActionCause.objects.filter(ReportDate__year = this_year ).count()
     
+    #Weekly 
+    Mon = ActionCause.objects.filter(ReportDate__week_day = 2, ReportDate__week =  week_num).count()
+    Tues = ActionCause.objects.filter(ReportDate__week_day = 3, ReportDate__week =  week_num).count()
+    Wen = ActionCause.objects.filter(ReportDate__week_day = 4, ReportDate__week =  week_num).count()
+    Thur = ActionCause.objects.filter(ReportDate__week_day = 5, ReportDate__week =  week_num).count()
+    Fri = ActionCause.objects.filter(ReportDate__week_day = 6, ReportDate__week =  week_num).count()
+    Sat = ActionCause.objects.filter(ReportDate__week_day = 7, ReportDate__week =  week_num).count()
+    Sun = ActionCause.objects.filter(ReportDate__week_day = 1, ReportDate__week =  week_num).count()
+    #Weeklymodeoftransportation
+    MonAri = ActionCause.objects.filter(ReportDate__week_day = 2, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Air').count()
+    TuesAri = ActionCause.objects.filter(ReportDate__week_day = 3, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Air').count()
+    WenAri = ActionCause.objects.filter(ReportDate__week_day = 4, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Air').count()
+    ThurAri = ActionCause.objects.filter(ReportDate__week_day = 5, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Air').count()
+    FriAri = ActionCause.objects.filter(ReportDate__week_day = 6, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Air').count()
+    SatAri = ActionCause.objects.filter(ReportDate__week_day = 7, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Air').count()
+    SunAri = ActionCause.objects.filter(ReportDate__week_day = 1, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Air').count()
+    
+    MonTruck = ActionCause.objects.filter(ReportDate__week_day = 2, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Truck').count()
+    TuesTruck = ActionCause.objects.filter(ReportDate__week_day = 3, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Truck').count()
+    WenTruck = ActionCause.objects.filter(ReportDate__week_day = 4, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Truck').count()
+    ThurTruck = ActionCause.objects.filter(ReportDate__week_day = 5, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Truck').count()
+    FriTruck = ActionCause.objects.filter(ReportDate__week_day = 6, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Truck').count()
+    SatTruck = ActionCause.objects.filter(ReportDate__week_day = 7, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Truck').count()
+    SunTruck = ActionCause.objects.filter(ReportDate__week_day = 1, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Truck').count()
+    
+    MonOcean = ActionCause.objects.filter(ReportDate__week_day = 2, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Ocean').count()
+    TuesOcean = ActionCause.objects.filter(ReportDate__week_day = 3, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Ocean').count()
+    WenOcean = ActionCause.objects.filter(ReportDate__week_day = 4, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Ocean').count()
+    ThurOcean = ActionCause.objects.filter(ReportDate__week_day = 5, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Ocean').count()
+    FriOcean = ActionCause.objects.filter(ReportDate__week_day = 6, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Ocean').count()
+    SatOcean = ActionCause.objects.filter(ReportDate__week_day = 7, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Ocean').count()
+    SunOcean = ActionCause.objects.filter(ReportDate__week_day = 1, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Ocean').count()
+    
+    
+    
+   
     context = {'record':record, 'Shortage':Shortage, 'Over':Over
                , 'Wrong':Wrong, 'Mixed':Mixed, 'PO':PO, 'Today':Today, 
-               'month':month, 'year':year, 'week':week }
+               'month':month, 'year':year, 'week':week,
+               'Mon':Mon, 'Tues':Tues, 'Wen':Wen, 'Thur':Thur, 'Fri':Fri, 'Sat':Sat, 'Sun':Sun,
+               'MonAri':MonAri, 'TuesAri':TuesAri, 'WenAri':WenAri, 'ThurAri':ThurAri, 'FriAri':FriAri, 'SatAri':SatAri, 'SunAri':SunAri,
+               'MonTruck':MonTruck, 'TuesTruck':TuesTruck, 'WenTruck':WenTruck, 'ThurTruck':ThurTruck, 'FriTruck':FriTruck, 'SatTruck':SatTruck, 'SunTruck':SunTruck,
+               'MonOcean':MonOcean, 'TuesOcean':TuesOcean, 'WenOcean':WenOcean, 'ThurOcean':ThurOcean, 'FriOcean':FriOcean, 'SatOcean':SatOcean, 'SunOcean':SunOcean,
+               
+               }
     return render(request,'Home.html', context)
 
 
