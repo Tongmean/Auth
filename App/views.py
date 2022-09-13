@@ -458,9 +458,12 @@ def Home(request):
     FriOcean = ActionCause.objects.filter(ReportDate__week_day = 6, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Ocean').count()
     SatOcean = ActionCause.objects.filter(ReportDate__week_day = 7, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Ocean').count()
     SunOcean = ActionCause.objects.filter(ReportDate__week_day = 1, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Ocean').count()
+    #List
+    Month = []
+    for x in range(1,8):
+        Month.append(ActionCause.objects.filter(ReportDate__week_day = x, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Ocean').count())
     
-    
-    
+    print(Month)
    
     context = {'record':record, 'Shortage':Shortage, 'Over':Over
                , 'Wrong':Wrong, 'Mixed':Mixed, 'PO':PO, 'Today':Today, 

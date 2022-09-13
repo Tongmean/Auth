@@ -15,6 +15,13 @@
       ({{request.user.Profile.Description}})
       <h6 class="text-center">Status: {{request.user.groups.get.name}}</h6>
   </h6>
+  <p class="text-center" id="currentTime" >  </p>
+  <script>
+    setInterval(function() {
+      const currentTime = new Date();
+      document.getElementById('currentTime').innerHTML = currentTime;
+    }, 1000);
+  </script>
   <br>
   <br>
   <div class="ps-3">
