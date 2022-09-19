@@ -453,11 +453,7 @@
     <script>
         $("document").ready(function () {
           $("#Dashboard").dataTable({
-            {% comment %} scrollX: true,
-            scrollY: '90vh',
-            scrollCollapse: true,
-            paging: false, {% endcomment %}
-            order: [[3, 'desc']],
+            order: [[0, 'desc']],
           });
           
         });

@@ -277,6 +277,7 @@ def MyProfile(request):
     
     return render(request, 'Profile.html',{'form':form})
 
+@login_required(login_url='Loginpage')
 def Dashboard(request):
     #Typeof
     Shortage = ShipmentForm.objects.filter(Status ='Close', TypeOfDiscrepancy = 'Shortage Quantity')
@@ -308,31 +309,7 @@ def Dashboard(request):
     
     Oversea= ShipmentFilter(request.GET, queryset= Oversea)
     Oversea = Oversea.qs.count()
-    # #Invoice
-    # Each = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Each')
-    # Carton = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Carton')
-    # Pail = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Pail')
-    # Piece = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Piece')
-    # Pair = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Pair')
-    # Bottle = ShipmentForm.objects.filter(Status ='Close', InvoiceOUM = 'Bottle')
-    
-    # Each = ShipmentFilter(request.GET, queryset= Each)
-    # Each = Each.qs.count()
-    
-    # Carton = ShipmentFilter(request.GET, queryset= Carton)
-    # Carton = Carton.qs.count()
-    
-    # Pail = ShipmentFilter(request.GET, queryset= Pail)
-    # Pail = Pail.qs.count()
-    
-    # Piece = ShipmentFilter(request.GET, queryset= Piece)
-    # Piece = Piece.qs.count()
-    
-    # Pair = ShipmentFilter(request.GET, queryset= Pair)
-    # Pair = Pair.qs.count()
-    
-    # Bottle = ShipmentFilter(request.GET, queryset= Bottle)
-    # Bottle = Bottle.qs.count()
+ 
     #Modeoftransportation
     Air = ShipmentForm.objects.filter(Status ='Close', ModeOfTranSportation = 'Air')
     Truck = ShipmentForm.objects.filter(Status ='Close', ModeOfTranSportation = 'Truck')
@@ -402,7 +379,7 @@ def InsertRecord(request):
 @user_only
 def MyActivities(request):
     useremail = request.user.email
-    record = ShipmentForm.objects.filter(SubmitBy = useremail ).order_by("-Transaction_Number").values
+    record = ShipmentForm.objects.filter(SubmitBy = useremail ).order_by("-Transaction_Number")
     return render(request, 'ShipmentForm/MyActivities.html', {'records':record})
 
 @login_required(login_url='Loginpage')
@@ -414,6 +391,7 @@ def Home(request):
     Mixed = ShipmentForm.objects.filter(Status ='Close', TypeOfDiscrepancy = 'Mixed Parts').count()
     PO = ShipmentForm.objects.filter(Status ='Close', TypeOfDiscrepancy = 'PO Problem').count()
     
+    
     my_date = date.today()
     my_day = datetime.now().day
     # my_week = datetime.now().week
@@ -421,11 +399,12 @@ def Home(request):
     this_year = datetime.now().year
     year, week_num, day_of_week = my_date.isocalendar()
     
-    Today = ActionCause.objects.filter(ReportDate__day = my_day ).count()
-    week = ActionCause.objects.filter(ReportDate__week = week_num ).count()
-    month = ActionCause.objects.filter(ReportDate__month = this_month ).count()
+    Today = ActionCause.objects.filter(ReportDate__day = my_day, ReportDate__month = this_month ,ReportDate__year = this_year ).count()
+    week = ActionCause.objects.filter(ReportDate__week = week_num, ReportDate__month = this_month, ReportDate__year = this_year ).count()
+    month = ActionCause.objects.filter(ReportDate__month = this_month,ReportDate__year = this_year ).count()
     year = ActionCause.objects.filter(ReportDate__year = this_year ).count()
     
+   
     #Weekly 
     Mon = ActionCause.objects.filter(ReportDate__week_day = 2, ReportDate__week =  week_num).count()
     Tues = ActionCause.objects.filter(ReportDate__week_day = 3, ReportDate__week =  week_num).count()
@@ -459,11 +438,11 @@ def Home(request):
     SatOcean = ActionCause.objects.filter(ReportDate__week_day = 7, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Ocean').count()
     SunOcean = ActionCause.objects.filter(ReportDate__week_day = 1, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Ocean').count()
     #List
-    Month = []
-    for x in range(1,8):
-        Month.append(ActionCause.objects.filter(ReportDate__week_day = x, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Ocean').count())
+    # Month = []
+    # for x in range(1,8):
+    #     Month.append(ActionCause.objects.filter(ReportDate__week_day = x, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Ocean').count())
     
-    print(Month)
+    
    
     context = {'record':record, 'Shortage':Shortage, 'Over':Over
                , 'Wrong':Wrong, 'Mixed':Mixed, 'PO':PO, 'Today':Today, 
