@@ -4,6 +4,7 @@ from email import message
 from django.contrib.sessions.models import Session
 from multiprocessing import context
 import re
+from django.utils import timezone
 from tokenize import group
 from urllib import response
 from xml.etree.ElementTree import PI
@@ -29,6 +30,7 @@ from django.utils.timezone import datetime # Create your views here.
 import csv
 from django.http import FileResponse
 import io
+
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import letter
@@ -148,7 +150,8 @@ def GenCSV(request):
 @login_required(login_url='Loginpage')
 def index(request):
     return HttpResponse("hello")
-@admin_only
+
+@login_required(login_url='Loginpage')
 def SignUpuser(request):
     form = CreateUserForm()
     if request.method == "POST":
@@ -168,13 +171,13 @@ def SignUpuser(request):
                 messages.success(request, 'The account was Created for :' + ' ' + username )
                 return redirect('managemanagement')
             else:
-                messages.ERROR(request, 'Please Check again' )
+                messages.error(request, 'Please Check again' )
                 # return HttpResponse("U from got some Problem:")
         
     return render(request, 'SignUpuser.html', {'form':form})
 
 
-@admin_only
+@login_required(login_url='Loginpage')
 def SignUpadmin(request):
     form = CreateUserForm()
     if request.method == "POST":
@@ -207,7 +210,7 @@ def LoginPage(request):
             messages.error(request, 'Please input correctly')
             
     
-    return render(request, 'LoginPage.html',)
+    return render(request, 'LoginPage.html')
 
 def LogOutUser(request):
     logout(request)
@@ -264,6 +267,8 @@ def DiscrepancyRecord(request):
 
 @login_required(login_url='Loginpage')
 def MyProfile(request):
+    user = request.user.Profile.Email
+    print(user)
     form = updateProfile(instance=request.user.Profile)
     if request.method == "POST":
         form = updateProfile(request.POST, request.FILES, instance=request.user.Profile)
@@ -279,6 +284,12 @@ def MyProfile(request):
 
 @login_required(login_url='Loginpage')
 def Dashboard(request):
+    my_date = date.today()
+    my_day = datetime.now().day
+    # my_week = datetime.now().week
+    this_month = datetime.now().month
+    this_year = datetime.now().year
+    year, week_num, day_of_week = my_date.isocalendar()
     #Typeof
     Shortage = ShipmentForm.objects.filter(Status ='Close', TypeOfDiscrepancy = 'Shortage Quantity')
     Over = ShipmentForm.objects.filter(Status ='Close', TypeOfDiscrepancy = 'Over Quantity')
@@ -321,9 +332,21 @@ def Dashboard(request):
     Ocean = ShipmentFilter(request.GET, queryset= Ocean)
     Ocean = Ocean.qs.count()
     
+    Monly=[]
     
+    for i in range(1,13):
+        mon = ActionCause.objects.filter(ReportDate__month = i , ReportDate__year =  this_year,).count()
+        Monly.append(mon)
+    
+    weekly =[]
+    for i in range(1,8):
+        week = ActionCause.objects.filter(ReportDate__week_day= i ,ReportDate__week = week_num  ,ReportDate__month = this_month , ReportDate__year =  this_year,).count()
+        weekly.append(week)
+    
+    print(weekly)
     record = ShipmentForm.objects.filter(Status= 'Close')
     records = record.select_related()
+    maxweek = ActionCause.objects.filter(ReportDate__week = week_num  ,ReportDate__month = this_month , ReportDate__year =  this_year,).count() + 5
     # print(records)
     myFilter = ShipmentFilter(request.GET, queryset= records)
     records = myFilter.qs       
@@ -332,6 +355,7 @@ def Dashboard(request):
                , 'Wrong':Wrong, 'Mixed':Mixed, 'PO':PO, 
                'Oversea':Oversea, 'local':local,
                'Air':Air, 'Truck':Truck, 'Ocean':Ocean,
+               'Monly':Monly, 'weekly':weekly,'maxweek':maxweek
                
     }
     return render(request,'Dashboard.html', context)
@@ -349,7 +373,7 @@ def ShipmentRecondList(request):
 @user_only
 def InsertRecord(request):
     form = Shipmentrecord
-    useremail = request.user.email
+    useremail = request.user.Profile.Email
     if 'submit' in request.POST: 
         form = Shipmentrecord(request.POST, request.FILES)
         if form.is_valid():
@@ -378,7 +402,7 @@ def InsertRecord(request):
 @login_required(login_url='Loginpage')
 @user_only
 def MyActivities(request):
-    useremail = request.user.email
+    useremail = request.user.Profile.Email
     record = ShipmentForm.objects.filter(SubmitBy = useremail ).order_by("-Transaction_Number")
     return render(request, 'ShipmentForm/MyActivities.html', {'records':record})
 
@@ -441,8 +465,10 @@ def Home(request):
     # Month = []
     # for x in range(1,8):
     #     Month.append(ActionCause.objects.filter(ReportDate__week_day = x, ReportDate__week =  week_num, Transaction_Number__ModeOfTranSportation = 'Ocean').count())
-    
-    
+    print(timezone.now())
+    print(request.user.email + request.user.Profile.Email)
+    Shipform = ShipmentForm.objects.filter(Status= 'Submitted').count()
+
    
     context = {'record':record, 'Shortage':Shortage, 'Over':Over
                , 'Wrong':Wrong, 'Mixed':Mixed, 'PO':PO, 'Today':Today, 
@@ -451,7 +477,7 @@ def Home(request):
                'MonAri':MonAri, 'TuesAri':TuesAri, 'WenAri':WenAri, 'ThurAri':ThurAri, 'FriAri':FriAri, 'SatAri':SatAri, 'SunAri':SunAri,
                'MonTruck':MonTruck, 'TuesTruck':TuesTruck, 'WenTruck':WenTruck, 'ThurTruck':ThurTruck, 'FriTruck':FriTruck, 'SatTruck':SatTruck, 'SunTruck':SunTruck,
                'MonOcean':MonOcean, 'TuesOcean':TuesOcean, 'WenOcean':WenOcean, 'ThurOcean':ThurOcean, 'FriOcean':FriOcean, 'SatOcean':SatOcean, 'SunOcean':SunOcean,
-               
+               'Shipform':Shipform
                }
     return render(request,'Home.html', context)
 
@@ -473,7 +499,7 @@ def Update(request, pk):
     #     else:
     #         messages.warning(request, 'You have got some errors')
             
-    useremail = request.user.email        
+    useremail = request.user.Profile.Email        
     if 'submit' in request.POST: 
         form = Shipmentrecord(request.POST, request.FILES, instance=Update)
         if form.is_valid():
@@ -501,7 +527,13 @@ def Update(request, pk):
 
 def Delete(request, pk):
     Delete = ShipmentForm.objects.get(Transaction_Number = pk)
-    Delete.delete()
+    form = ChangeStatus( instance=Delete )
+    if request.method == 'POST':
+        form = ChangeStatus(request.POST, request.FILES, instance = Delete)
+        if form.is_valid:
+            f = form.save(commit=False)
+            f.Status = 'Cancelled'
+            f.save()
     messages.success(request, 'You have record has delete Successfully')
     return redirect(MyActivities)
 
@@ -520,7 +552,7 @@ def AddAction(request, pk):
     form = ChangeStatus( instance=Update )
     form1 = ActionCauseForm()
     if request.method == 'POST':
-        useremail = request.user.email
+        useremail = request.user.Profile.Email
         form1 = ActionCauseForm(request.POST, request.FILES)
         form = ChangeStatus(request.POST, request.FILES, instance = Update)
         if form1.is_valid and form.is_valid:
@@ -545,9 +577,11 @@ def ActionRecordList(request):
 
 @login_required(login_url='Loginpage')
 def MyTask(request):
-    useremail = request.user.email
+    
+    useremail = request.user.Profile.Email
+    
     record = ActionCause.objects.filter(ReportBy = useremail)
-
+    
     return render(request, 'Admin/MyTask.html',{'records':record})
 
 

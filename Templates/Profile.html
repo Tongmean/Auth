@@ -131,12 +131,15 @@
                     <hr>
                     <div class="text-center">
                         <p>Name: <span class="fs-5 ">{{request.user.Profile.Fullname}}</span></p>
+                        <p>Eamil: <span class="fs-5">{{request.user.Profile.Email}}</span></p>
                         <p>Description: <span class="fs-5">{{request.user.Profile.Description}}</span></p>
                         <p>Date_Created: <span class="fs-5">{{request.user.Profile.Date_Created}}</span></p>
                         <p>Last Login: <span class="fs-5">{{request.user.last_login}}</span></p>
                     </div>
                     <div class="flex d-flex justify-content-center align-items-center mt-5 pb-3" >
-                        <img class="shadow rounded-circle" alt="Your Profile" style="width: 180px; height: 180px; object-fit:cover" src="{{request.user.Profile.Profile_Img.url}}"/>
+                        {% if request.user.Profile.Profile_Img %}
+                        <img class="shadow rounded-circle" alt="Your Profile" style="width: 180px; height: 180px; object-fit:cover" src="{{request.user.Profile.Profile_Img.url|default:""}}"/>
+                        {% endif %}
                     </div>
                 </div>       
             </div>

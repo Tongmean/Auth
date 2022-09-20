@@ -21,57 +21,125 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/a4f690b883.js" crossorigin="anonymous"></script>
     <style>
+        .typewriter h1 {
+            overflow: hidden;
+            /* Ensures the content is not revealed until the animation */
+            border-right: .15em solid orange;
+            /* The typwriter cursor */
+            white-space: nowrap;
+            /* Keeps the content on a single line */
+            margin: 0 auto;
+            /* Gives that scrolling effect as the typing happens */
+            letter-spacing: .15em;
+            /* Adjust as needed */
+            animation: typing 10s steps(80, end), blink-caret .75s step-end infinite;
+            animation-iteration-count: infinite;
+          }
+          /* The typing effect */
+          
+          @keyframes typing {
+            from {
+              width: 0
+            }
+            to {
+              width: 100%
+            }
+          }
+          /* The typewriter cursor effect */
+          
+          @keyframes blink-caret {
+            from, to {
+              border-color: transparent
+            }
+            50% {
+              border-color: orange;
+            }
+        }
         .LoginPage {
             background-color:white;
-            padding:50px;
-            border: 1px solid black;
-            border-radius:30px;
+            padding-top:100px;
+            padding-left:50px;
+            padding-right:50px;
+
+            border: 1px solid grey;
+            border-radius:15px;
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-            width:100%;
+            height:80vh;
+            width:60%;
+            
         }
+    
         .messagesLogin {
             display:flex;
             
+        }
+        .body{
+            height:100vh;
+            
+        }
+        .imglogo{
+            display:flex;
+            justify-content:center;
+            align-items:end;
+        }
+        .title{
+            display:flex;
+            text-align:center;
+            justify-content:center;
+             
         }
     </style>
 </head>
 
 <body>
     {% load crispy_forms_tags %}
-    <div class=container row>
-        <div class="container-fluid d-flex justify-content-center align-items-center" style="height:100vh; ">
-            <form Action='' method='POST' enctype='multipart/form-data'>
-            {% csrf_token %}
-
-                <div class = "align-items-center m-4 LoginPage " style="">
-                    <div class="mb-3">
-                    <div>
-                        <label for="" class="form-label">Username</label>
-                        <input type="text" name="username" class="form-control" >
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Password</label>
-                        <input type="password" name="password" class="form-control" >
-                        <button type="Submit" class="mt-3 btn btn-primary w-100" >Log In</button>
-                    </div> 
-        
-                    
-                    {% if messages %}
+    {% load static %}
+    <div class="container-fluid " >
+        <div class="row body">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-5">
+                <div class="title my-5 typewriter">
+                    <h1>
+                        Welcome to Discrepancy Portal
+                    </h1>
+                </div>
+                <div class="mb-2 imglogo mt-5">
+                    <img src="{% static 'courier.png' %}" alt="logo">
+                </div>
+                
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 d-flex justify-content-center align-items-center">
+                <div class="LoginPage">
+                    <form Action='' method='POST' enctype='multipart/form-data'>
+                    {% csrf_token %}
+                        <div class="mt-3">
+                            <label for="" class="form-label">Username</label>
+                            <input type="text" name="username" class="form-control" >
+                        </div>
+                        <div class="mb-3 mt-4">
+                            <label class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control" >
+                            <button type="Submit" class="mt-3 btn btn-primary w-100 mt-5" >Log In</button>
+                        </div> 
+                    </form>
+                    <div class="text-center mt-5">
+                        {% if messages %}
                         <ul class="messages me-4 text-center">
                             {% for message in messages %}
-                                <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show " role="alert">
+                                {% if message.tags == 'error' %}
+                                <div id="message" class="alert {{ message.tags }} alert-primary alert-dismissible fade show " role="alert"> 
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                                     </button>
-                                    {% if message.tags == 'error' %}
+                                    
                                     {{ message }}
-                                    {% endif %} 
-                                    {% comment %} <p class="text-danger">{{ message.tags }}</p> {% endcomment %}
+                                
                                 </div>
+                                {% endif %} 
                             {% endfor %}
                         </ul>
-                    {% endif %} 
+                        {% endif %} 
+                    </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 

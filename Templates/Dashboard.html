@@ -162,12 +162,36 @@
         <div class="container-fluid">
  
             <div class="row h-25 m-2">
-                <div class="card body-card mb-2">
+                <div class="container-fluid card body-card mb-2">
                     <div class="card-header d-flex align-items-center py-2">
                         <h4 class="py-1"><i class="fa fa-bar-chart" style="font-size:27px"></i>
                         </i id="typewriter">Chart Overview</h4>
                     </div>
-                    <div class="p-4">
+                    {% comment %} <div class="p-4">
+                        <form method="GET">
+                            {{myFilter.form}}
+                            
+                            
+                            <button type="submit" class="btn btn-info btn-sm ms-4" style="backgroud-color:#02075d">Search</button>
+                        </form>
+                    </div> {% endcomment %}
+                    
+                </div>
+                <div class="row mx-auto mt-2 " style="">
+                    <div class="border col-xl-6 col-lg-6  col-md-12 col-sm-12 shadow flex d-flex justify-content-center align-items-center ">
+                        <canvas id="myChartMonly" style="width:100%;max-width:600px" class="" >
+                            <!--bar-->
+                        </canvas>
+                    </div>
+                    <div class="border col-xl-6 col-lg-6 text-center  col-md-12 col-sm-12 shadow flex d-flex justify-content-center">
+                        
+                        <canvas id="myChartweekly" style="width:100%;max-width:600px" class="mt-5" >
+                            <!--bar-->
+                        </canvas>
+                    </div>
+                </div>
+                <div class="row card my-4 ms-3 me-5">
+                    <div class="p-4 me-3">
                         <form method="GET">
                             {{myFilter.form}}
                             
@@ -175,6 +199,7 @@
                             <button type="submit" class="btn btn-info btn-sm ms-4" style="backgroud-color:#02075d">Search</button>
                         </form>
                     </div>
+                    
                 </div>
                 <div class="row mx-auto d-flex justify-content-center align-items-center">
                     <div class="border col-xl-6 col-lg-5  col-md-12 col-sm-12 d-flex justify-content-center align-items-center shadow p-5" >
@@ -203,6 +228,7 @@
                         </div>
                     </div>
                 </div>
+
                     
             </div>  
             <div class="Exportcsv ms-5 mt-5 mb-2 w-25">
@@ -331,17 +357,17 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="row m-2">
+                                                {% comment %} <div class="row m-2">
                                                     <div class="col">
-                                                        Action : {{record.RootCause}}
+                                                        Action : {{record.ActionCause.RootCause}}
                                                     </div>
                                                     <div class="col">
-                                                        RootCause : {{record.Action.RootCause}}
+                                                        RootCause : {{record.ActionCause.RootCause}}
                                                     </div>
                                                     <div class="col">
-                                                        Report-By: {{record.Transaction_Number.ReportBy}}
+                                                        Report-By: {{record.ActionCause.ActionID}}
                                                     </div>
-                                                </div>
+                                                </div> {% endcomment %}
                                                 
                                                 <div class="row m-2">
                                                     <div class="col-4">
@@ -511,6 +537,56 @@
               text: "Mode Of TranSportation",
              
             }
+          }
+        });
+    </script>
+    <!--Monly-->
+    <script>
+        var xValues = ["January", " February", "March", "April","May","June","July","August","September","October","November","Demcember",];
+        var yValues = [{% for i in Monly%} "{{i}}", {% endfor %}];
+        var barColors = ["red", "green","blue","orange","brown","blue","red", "green","blue","orange","brown","blue"];
+        
+        new Chart("myChartMonly", {
+          type: "bar",
+          data: {
+            labels: xValues,
+            datasets: [{
+              backgroundColor: barColors,
+              data: yValues
+            }]
+          },
+          options: {
+            legend: {display: false},
+            title: {
+              display: true,
+              text: "Monthly Cases"
+            }
+          }
+        });
+    </script>
+    <!--Weekly-->
+    <script>
+        var xValues = ["Sunday", "Monday","Tuesday","Wendesday","Thurday","Friend","Saturday"];
+        var yValues = [{% for i in weekly %} "{{i}}", {% endfor %}];
+        
+        new Chart("myChartweekly", {
+          type: "line",
+          data: {
+            labels: xValues,
+            datasets: [{
+              fill: false,
+              lineTension: 0,
+              backgroundColor: "rgba(0,0,255,1.0)",
+              borderColor: "rgba(0,0,255,0.1)",
+              data: yValues
+            }]
+          },
+          options: {
+            legend: {display: false},
+            scales: {
+              yAxes: [{ticks: {min: 0, max:{{maxweek}}}}],
+            }
+            
           }
         });
     </script>

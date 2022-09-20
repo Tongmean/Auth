@@ -201,11 +201,11 @@
                                                         <div class="col-1 ps-5">
                                                             <div class="bottom-four-up">
                                                                 {%if record.Status == 'Submitted'%}
-                                                                <a class="btn btn-danger btn-sm mx-3" href={% url 'Delete' record.Transaction_Number %} >Delete</a>
+                                                                <a class="btn btn-danger btn-sm mx-3" data-bs-toggle="modal" data-bs-target="#ActivitiesDelete{{record.Transaction_Number}}">Delete</a>
                                                                 {% endif %}
                                                                 {%if record.Status == 'Saved'%}
                                                                 <a class="btn btn-success btn-sm mx-4" href={% url 'Update' record.Transaction_Number %} >Update</a>
-                                                                <a class="btn btn-danger btn-sm mx-3" href={% url 'Delete' record.Transaction_Number %} >Delete</a>
+                                                                <a class="btn btn-danger btn-sm mx-3" data-bs-toggle="modal" data-bs-target="#ActivitiesDelete{{record.Transaction_Number}}" >Delete</a>
                                                                 {% endif %}
 
                                                             </div>
@@ -330,11 +330,37 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <div class="modal fade" id="ActivitiesDelete{{record.Transaction_Number}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog modal-md">
+                                                                    <form Action='Delete/{{record.Transaction_Number}}' method='POST' enctype='multipart/form-data'>
+                                                                        {% csrf_token %}
+                                                                        <div class="modal-content ">
+                                                                            <div class="modal-header my-3 ms-4">
+                                                                                <div class="text-center ">
+                                                                                    <h4 class="modal-title" id=""></h4>
+                                                                                </div>
+                                                                                <button type="button" class="btn-close me-3 my-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <div class="text-center">
+                                                                                    <h6>You are about to Delete this Record</h6>
+                                                                                    <h5>Are You sure ???</h5>
+                                                                                </div>
+                                            
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                            <button class="btn btn-danger mx-4" type="submit"><i class="fa fa-trash-o me-3" style="font-size:16px"></i>Delete</button>
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                            </div>
                                          
                                         </td>
                                     </tr>
@@ -390,12 +416,13 @@
         }
 
     </script>
+
     <!--DataTable-->
     <script>
         $("document").ready(function () {
           $("#filterTable").dataTable({
             order: [[0, 'desc']],
-            columnDefs: [ { type: 'date', 'targets': [4] } ],
+            columnDefs: [ { type: 'date', 'targets': [0] } ],
             order: [[ 0, 'desc' ]]
           });
           

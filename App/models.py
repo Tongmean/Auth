@@ -19,6 +19,7 @@ class Profile(models.Model):
     Fullname = models.CharField(max_length=50, null=True)
     Description = models.CharField(max_length=60, null=True)
     Date_Created = models.DateTimeField(auto_now_add=True, null=True)
+    Email = models.EmailField(null=True, blank=True, max_length=200)
     Profile_Img = models.ImageField(null= True, blank= True, default='Default_User.png', upload_to='Profile_pic')
     
     def __str__(self):
@@ -34,7 +35,7 @@ class Tag(models.Model):
 def create_Profile(sender, instance, created, **kwargs):
     
     if created:
-        Profile.objects.create(user=instance ,Fullname = instance.username)
+        Profile.objects.create(user=instance ,Fullname = instance.username, Email = instance.email)
         print('Profile Created')
         
 post_save.connect(create_Profile, sender = User)
@@ -42,6 +43,7 @@ post_save.connect(create_Profile, sender = User)
 
 class ShipmentForm(models.Model):
     Transaction_Number = models.AutoField(primary_key = True, null=False)
+    Running_num =  models.CharField(max_length=60, null= True, blank= True)
     AREA = (
         ('local' , 'local'),
         ('Oversea' , 'Oversea'),
@@ -63,6 +65,7 @@ class ShipmentForm(models.Model):
     BillOfLanding = models.CharField(max_length=70, null =True, blank= True)
     SupplierNAme = models.CharField(max_length=70, null =True, blank= True)
     PartNumber = models.CharField(max_length=70, null =True, blank= True)
+    PartDescription = models.CharField(max_length=70, null =True, blank= True)
     InvoiceQuantity = models.CharField(max_length=50, null =True, blank= True)
     INVOICEUOM = (
         ('Each','Each'),

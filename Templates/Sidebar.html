@@ -2,8 +2,10 @@
 <div >
   <div class="flex d-flex justify-content-center align-items-center" >
     <img class="rounded-circle shadow" style="width: 150px; height: 150px;  object-fit:cover"
-        src="{{request.user.Profile.Profile_Img.url}}"
-      />
+        {% if request.user.Profile.Profile_Img %}
+        src="{{request.user.Profile.Profile_Img.url|default:""}}"
+        {% endif %}
+      /> 
   </div>
   <h6 class="text-center text-info mt-5">
      
@@ -66,12 +68,12 @@
         >
       </li>
 
-      <li>
+      {% comment %} <li>
         <i class="fa fa-address-book" style="font-size:24px"></i>
         <a href="ActionRecordList" style="text-decoration: none; color: #000"
           >Action record List</a
         >
-      </li>
+      </li> {% endcomment %}
       <li>
         <i class='fas fa-tasks' style='font-size:24px'></i>
         <a href="MyTask" style="text-decoration: none; color: #000"

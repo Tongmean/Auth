@@ -38,7 +38,7 @@
                     <form Action='' method='POST' enctype='multipart/form-data' autocomplete="on">
                         {% csrf_token %}
                         <div class="card-header text-center text-success " style="background-color: #ccc">
-                            <h4>Shipment Imformation</h4>
+                            <h4>Shipment Information</h4>
                         </div>     
                         <div>
                             <div class="row">
@@ -127,6 +127,11 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col">
+                                    <label for="" class="form-label">Part Description</label>
+                                    <span data-client-id="required_indicator" class="css-skcghl ekxsfat1" style="color:red" >*</span>
+                                    {{form.PartDescription|as_crispy_field}}
+                                </div>
                                 <div class="col">
                                     <label for="" class="form-label">Unit price($)</label>
                                     <span data-client-id="required_indicator" class="css-skcghl ekxsfat1" style="color:red" >*</span>

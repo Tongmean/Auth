@@ -205,9 +205,113 @@
                     </div>
                 </div>
             </div>
+            
+        </div>
+        <div>
         </div>
         <div class="container mt-1 home">
             <div class="row shadow h-75 m-2">
+                <div class="card">
+                    <div class="card-header d-flex align-items-center py-2">
+                        <h4 class="py-1"><i class="fa fa-bar-chart" style="font-size:27px"></i>
+                        </i id="typewriter">ShortCut</h4>
+                        
+                    </div>
+                </div>
+                <div class="container row d-flex justify-context-center my-2 ms-1">
+                    {% if request.user.groups.get.name == 'User' %}
+                    <div class="col-sm">
+                        <div class="card">
+                            <div class="card-body h-25">
+                                <p>Go to</p>
+                                <p><i class="fa fa-pencil" style="font-size:24px"></i>
+                                    <a href="InsertRecord" style="text-decoration: none; color: #000"
+                                      >&nbsp;Insert Record</a
+                                    >
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="card">
+                            <div class="card-body h-25">
+                                <p>GO To</p>
+                                <p><i class="fa fa-address-book" style="font-size: 24px"></i>
+                                    <a href="ShipmentRecordList" style="text-decoration: none; color: #000"
+                                      >&nbsp;Shipment Record</a
+                                    >
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="card">
+                            <div class="card-body h-25">
+                                <p>Go To</p>
+                                <p><i class='fas fa-tasks' style='font-size:24px'></i>
+                                    <a href="MyActivities" style="text-decoration: none; color: #000"
+                                      >&nbsp;My Activities</a
+                                    >
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if request.user.groups.get.name == 'admin' %}
+                    <div class="col-sm">
+                        <div class="card">
+                            <div class="card-body h-25 d-flex justify-content-between">
+                                <div>
+                                    <p></p>
+                                    <p></p>
+                                    <p></p>
+                                    <h5>{{Shipform}} Shipment Form </h5>
+                                </div>
+                                <div class="">
+                                    <p>GO To</p>
+                                    <p><i class="fa fa-pencil" style="font-size:24px"></i>
+                                        <a href="ShipmentList" style="text-decoration: none; color: #000"
+                                        >Insert Action</a
+                                        >
+                                        
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="card">
+                            <div class="card-body h-25">
+                                <p>GO To</p>
+                                <p><i class='fas fa-tasks' style='font-size:24px'></i>
+                                    <a href="MyTask" style="text-decoration: none; color: #000"
+                                      >&nbsp;My Task</a
+                                    >
+                                    
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="col-sm">
+                        <div class="card">
+                            <div class="card-body h-25">
+                                <p>GO To</p>
+                                <p><i class="fa fa-bar-chart-o" style="font-size: 24px"></i>
+                                    <a href="Dashboard" style="text-decoration: none; color: #000"
+                                      >&nbsp;Dashboard</a
+                                    >
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            
+            </div>
+           
+            {% comment %} <div class="row shadow h-75 m-2">
                 <div class="card">
                     <div class="card-header d-flex align-items-center py-2">
                         <h4 class="py-1"><i class="fa fa-bar-chart" style="font-size:27px"></i>
@@ -225,9 +329,9 @@
                     <!--Pie-->
                 </div>
             
-            </div>
+            </div> {% endcomment %}
             <br>
-            <div class="row weekly m-2">
+            {% comment %} <div class="row weekly m-2">
                 <div class=" card card-header mb-2">
                     <h5><i class='fas fa-calendar-alt me-3' style='font-size:30px'></i>Weekly</h5>
                 </div>
@@ -244,7 +348,7 @@
                     <canvas id="myChartweekly" style="width:100%;max-width:600px"></canvas>
 
                 </div>
-            </div>
+            </div> {% endcomment %}
         </div> 
 
     </div>
