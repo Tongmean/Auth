@@ -191,7 +191,7 @@ def SignUpadmin(request):
             user.groups.add(group)
             messages.success(request, 'The account was Created for' + username )
         else:
-            messages.ERROR(request, 'The account was Created for :' + ' ' + username )
+            messages.error(request, 'The account was Created for :' + ' ' + username )
         
     return render(request, 'SignUpadmin.html', {'form':form})
 
