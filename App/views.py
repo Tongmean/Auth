@@ -290,6 +290,7 @@ def Dashboard(request):
     this_month = datetime.now().month
     this_year = datetime.now().year
     year, week_num, day_of_week = my_date.isocalendar()
+    
     #Typeof
     Shortage = ShipmentForm.objects.filter(Status ='Close', TypeOfDiscrepancy = 'Shortage Quantity')
     Over = ShipmentForm.objects.filter(Status ='Close', TypeOfDiscrepancy = 'Over Quantity')
@@ -372,14 +373,16 @@ def ShipmentRecondList(request):
 @login_required(login_url='Loginpage')
 @user_only
 def InsertRecord(request):
+    this_year = datetime.now().year
     form = Shipmentrecord
-    useremail = request.user.Profile.Email
+    useremail = request.user.email
     if 'submit' in request.POST: 
         form = Shipmentrecord(request.POST, request.FILES)
         if form.is_valid():
             f = form.save(commit=False)
             f.Status= 'Submitted'
             f.SubmitBy = useremail
+            f.Running_num = str(this_year)+"-"+str(ShipmentForm.objects.filter(SubmitDate__year = datetime.now().year).count() + 1)
             f.save()
             messages.success(request, 'Your form was Submit successfully')
             return redirect('MyActivities')
@@ -392,6 +395,7 @@ def InsertRecord(request):
             f = form.save(commit=False)
             f.Status= 'Saved'
             f.SubmitBy = useremail
+            f.Running_num = str(this_year)+"-"+str(ShipmentForm.objects.filter(SubmitDate__year = datetime.now().year).count() + 1)
             f.save()
             messages.success(request, 'Your form was Save successfully')
             return redirect('MyActivities')
@@ -402,7 +406,7 @@ def InsertRecord(request):
 @login_required(login_url='Loginpage')
 @user_only
 def MyActivities(request):
-    useremail = request.user.Profile.Email
+    useremail = request.user.email
     record = ShipmentForm.objects.filter(SubmitBy = useremail ).order_by("-Transaction_Number")
     return render(request, 'ShipmentForm/MyActivities.html', {'records':record})
 
@@ -499,13 +503,15 @@ def Update(request, pk):
     #     else:
     #         messages.warning(request, 'You have got some errors')
             
-    useremail = request.user.Profile.Email        
+    useremail = request.user.email     
     if 'submit' in request.POST: 
+        Running = datetime.now().year + ShipmentForm.objects.filter(SubmitDate__year = datetime.now().year) + 1
         form = Shipmentrecord(request.POST, request.FILES, instance=Update)
         if form.is_valid():
             f = form.save(commit=False)
             f.Status= 'Submitted'
             f.SubmitBy = useremail
+            f.Running_num = Running
             f.save()
             messages.success(request, 'Your form was Submit successfully')
             return redirect('MyActivities')
@@ -578,7 +584,7 @@ def ActionRecordList(request):
 @login_required(login_url='Loginpage')
 def MyTask(request):
     
-    useremail = request.user.Profile.Email
+    useremail = request.user.email
     
     record = ActionCause.objects.filter(ReportBy = useremail)
     

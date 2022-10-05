@@ -102,8 +102,13 @@ class ShipmentForm(models.Model):
         if self.Status == 'Close':
             Tran = currentdate - self.SubmitDate
             return Tran
+    # def Runging(self):
+    #     Running = datetime.now().year + ShipmentForm.objects.filter(SubmitDate__year = datetime.now().year) + 1
+    #     return Running
+    
     def save(self, *args, **kwargs):
         self.ProcessingTime = str(self.Process())
+        # self.Running_num = str(self.Runging())
         super(ShipmentForm, self).save(*args, **kwargs)
 
 class ActionCause(models.Model):

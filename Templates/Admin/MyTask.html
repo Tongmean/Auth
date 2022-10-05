@@ -120,7 +120,7 @@
                             <table id="Actionlist" class="table table-striped display  nowrap" style="width:100%">
                                 <thead class="thead-dark">
                                     <tr class="text-center">
-                                        <th scope="col">ActionID</th>
+                                        <th scope="col">Transaction_Number</th>
                                         <th scope="col">Rootcause</th>
                                         <th scope="col">Action</th>
                                         <th scope="col">Report_date</th>
@@ -132,7 +132,7 @@
                                 <tbody>
                                     {% for record in records %}
                                     <tr class="">
-                                        <td>{{record.ActionID}}</td>
+                                        <td>{{record.Transaction_Number.Transaction_Number}}</td>
                                         <td>{{record.RootCause}}</td>
                                         <td>{{record.Action}}</td>
                                         <td>{{record.ReportDate}}</td>
